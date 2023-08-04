@@ -4,6 +4,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import InputField from "@/components/InputField";
 import Link from 'next/link';
+import Counter from "@/components/Counter";
 type Props = {};
 
 const RegistrationPage = (props: Props) => {
@@ -24,13 +25,15 @@ const RegistrationPage = (props: Props) => {
     firstName: "",
     lastName: "",
     email: "",
+    date: "",
     password: "",
     age: "",
     confirmPassword: "",
   };
   return (
     <div className="min-h-screen w-full font-custom bg-light-purple">
-  <h1 className="text-white flex justify-center items-center pt-16 pb-6">
+      <Counter/>
+  <h1 className="text-4xl text-white flex justify-center items-center pt-16 pb-6">
     Rombo
   </h1>
   <div className="flex justify-center items-center pb-8">
@@ -109,7 +112,7 @@ const RegistrationPage = (props: Props) => {
     )}
   </Formik>
 </div>
-  );
+  );  
 }
 export default RegistrationPage;
 
