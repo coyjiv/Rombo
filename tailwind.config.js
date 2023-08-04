@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        custom: ['Montserrat', 'Open Sans', 'sans'], 
+      },
+      colors: {
+        'light-pink': '#f2f5eb',
+        'light-purple': '#96a4c1',
+        'medium-purple': '#624fa1',
+        'dark-purple': '#322852',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
