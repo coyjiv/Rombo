@@ -1,22 +1,57 @@
-import React from 'react';
-import { ErrorMessage, useField} from 'formik';
+import React, { useState, InputHTMLAttributes } from 'react';
+import { ErrorMessage, useField } from 'formik';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const InputField = ({ label, ...props }: {
-    [x: string]: any;
-    label: any;
-}) => {
-  const [field, meta] = useField(props)
-  return (
-    <div className="mb-8 text-lg ">
-      {label ? <label htmlFor={field.name}>{label}</label> : <></>}
-      <input 
-        className={` text-black  w-full form-control flex items-center justify-center shadow-none ${meta.touched && meta.error && 'is-invalid'}`}
-        {...field} {...props}
-        autoComplete="off"
-      />
-      <ErrorMessage component="div" name={field.name} className="absolute  text-red-600 text-md" />
-    </div>
-  )
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  icon?: React.ReactElement;
+  showPasswordToggle?: boolean;
 }
+
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  icon,
+  showPasswordToggle = false,
+  ...props
+}) => {
+  const [field, meta] = useField(props);
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="mb-6">
+      <div className="relative mt-1">
+      <input 
+          {...field}
+          {...props}
+          className={` placeholder-dark-purple text-black text-lg block w-full py-2 px-4 border rounded-md ${
+            meta.touched && meta.error ? 'border-red-500' : 'border-gray-300'
+          } focus:outline-none focus:ring focus:border-blue-500 duration-500 pb-1`}
+          type={showPassword && props.type === 'password' ? 'text' : props.type}
+          />
+         {icon && (
+    <div className="absolute inset-y-0 right-2 pr-3 flex items-center pointer-events-none text-xl text-medium-purple">
+      {icon}
+    </div>
+  )}
+         {showPasswordToggle && props.type === 'password' && (
+          <div className="absolute inset-y-0 right-3 flex items-center">
+            <button
+              type="button"
+              className="focus:outline-none"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash className = "text-xl text-medium-purple mr-2" /> : <FaEye className = "text-xl text-medium-purple mr-2" />}
+            </button>
+          </div>
+        )}
+      </div>
+      {meta.touched && meta.error && (
+        <div className="mt-2 text-md text-red-600">
+          <ErrorMessage name={field.name} />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default InputField;

@@ -9,7 +9,7 @@ function Counter() {
 console.log(user)
   return (
     <div>
-  <button onClick={()=>{dispatch(fetchUserById())}}>dsdqdwqd</button>
+  <button onClick={()=>{dispatch(fetchUserById())}}></button>
     </div>
   );
 }

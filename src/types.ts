@@ -3,8 +3,7 @@ export interface User {
     firstName: String,
     lastName: String,
     email: String,
-    date: String,
-    age: String,  
+    date: Date,
 }
 export interface ApiError {
     error: String,
