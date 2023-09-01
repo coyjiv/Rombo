@@ -102,7 +102,7 @@ const RegistrationPage = (props: Props) => {
              onBlur={formik.handleBlur("date")}
              showYearDropdown={true}
              yearDropdownItemNumber={100}
-             scrollableYearDropdown // Включаем возможность прокрутки списка годов
+             scrollableYearDropdown 
              minDate={new Date(new Date().getFullYear() - 100, 0, 1)} 
              maxDate={new Date()} 
                 className={`placeholder-dark-purple text-black text-lg block w-full py-2 px-4 mb-6 border rounded-md  ${
@@ -122,14 +122,13 @@ const RegistrationPage = (props: Props) => {
                 placeholder="Password"
                 showPasswordToggle={true}
               />
-
               <InputField
                 type="password"
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 showPasswordToggle={true}
               />
-              <a>By checking this box, I agree to terms of the service</a>
+              <p>By checking this box, I agree to terms of the service</p>
               <InputField
                 className="styled-input"
                 type="checkbox"
