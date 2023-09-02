@@ -15,7 +15,7 @@ const generateFakeChatData = () => {
 };
 
 const ChatList = ({ searchText }) => {
-  // Используем useState для хранения данных о чатах
+
   const [chatData, setChatData] = useState([]);
 
   // Генерируем моковые данные только при монтировании компонента

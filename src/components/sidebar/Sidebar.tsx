@@ -4,86 +4,113 @@ import React, { useState } from "react";
 import ChatList from "./ChatList";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { RxCross1 } from "react-icons/rx";
+import Profile from "@/pages/profile";
+import Friends from "@/pages/friends"; 
+import Music from "@/pages/music"; 
+import Settings from "@/pages/settings"; 
 
-type Props = {};
 
-const Sidebar = (props: Props) => {
+const Sidebar = () => {
   const [isOpen, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [isSearchIcon, setIsSearchIcon] = useState(true);
+  const [currentPage, setCurrentPage] = useState("chatList"); 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
-    setIsSearchIcon(e.target.value === ""); // Устанавливаем true, если поле пусто, иначе false
+    setIsSearchIcon(e.target.value === "");
   };
 
   const handleClearClick = () => {
-    console.log("Clear button clicked");
     setSearchText('');
-    setIsSearchIcon(true); // Возвращаем иконку поиска
+    setIsSearchIcon(true);
   };
+
+  const handleProfileClick = () => {
+    setCurrentPage("profile");
+  };
+
+  const handleFriendsClick = () => {
+    setCurrentPage("friends");
+  };
+
+  const handleMusicClick = () => {
+    setCurrentPage("music");
+  };
+
+  const handleSettingsClick = () => {
+    setCurrentPage("settings");
+  };
+
+  let currentContent;
+
+  switch (currentPage) {
+    case "profile":
+      currentContent = <Profile />;
+      break;
+    case "friends":
+      currentContent = <Friends />;
+      break;
+    case "music":
+      currentContent = <Music />;
+      break;
+    case "settings":
+      currentContent = <Settings />;
+      break;
+    default:
+      currentContent = <ChatList searchText={searchText} />;
+  }
+
 
   return (
     <div className="drawer flex overflow-y-auto">
       <input id="my-drawer" type="checkbox" className="drawer-toggle hidden" />
-      <div className="drawer-content  min-h-screen bg-dark-purple p-4">
+      <div className="drawer-content min-h-screen bg-dark-purple bg-opacity-50 p-4 flex-1">
         <div className="flex gap-4 mb-4">
           <div className="relative w-full">
             <input
               type="text"
-              className="w-full border rounded-lg py-3 px-3  text-white bg-purple-800 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full border rounded-lg py-3 px-3 text-white bg-purple-800 bg-opacity-70 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300"
               placeholder="Search"
               value={searchText}
               onChange={handleInputChange}
             />
-            <div className="absolute inset-y-1 right-2 flex items-center ">
+            <div className="absolute inset-y-1 right-2 flex items-center">
               <div className="text-white text-2xl rounded-full py-3 px-2 overflow-hidden">
                 {!isSearchIcon && (
-                  <button className="absolute inset-y-0 right-0 py-3 px-2 rounded-full bg-dark-purple w-10 h-10  " onClick={handleClearClick}>
-                  <RxCross1 />
-                </button>
-                  
+                  <button className="absolute inset-y-0 right-0 py-3 px-2 rounded-full bg-dark-purple w-10 h-10" onClick={handleClearClick}>
+                    <RxCross1 />
+                  </button>
                 )}
                 {isSearchIcon && <BiSearchAlt2 />}
               </div>
             </div>
           </div>
 
-          <label
-            htmlFor="my-drawer"
-            className="btn btn-primary drawer-button"
-          >
+          <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </label>
         </div>
 
-        <ChatList searchText={searchText} />
+        {currentContent}
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay">
           {" "}
         </label>
-        <ul className="menu p-4 w-80 min-h-full bg-dark-purple text-base-content text-2xl">
-          <Link href="/profile">
-            <li className="mb-4">
-              <a className="hover:text-primary">Profile</a>
-            </li>
-          </Link>
-          <Link href="/friends">
-            <li className="mb-4">
-              <a className="hover:text-primary">Friends</a>
-            </li>
-          </Link>
-          <Link href="/music">
-            <li className="mb-4">
-              <a className="hover:text-primary">Music</a>
-            </li>
-          </Link>
-          <Link href="/settings">
-            <li className="mb-4">
-              <a className="hover:text-primary">Settings</a>
-            </li>
-          </Link>
+        <ul className="menu p-4 w-1/4 min-h-full bg-dark-purple text-base-content text-2xl">
+          <li className="mb-4" onClick={handleProfileClick}>
+            <a className="hover:text-primary">Profile</a>
+          </li>
+          <li className="mb-4" onClick={handleFriendsClick}>
+            <a className="hover:text-primary">Friends</a>
+          </li>
+          <li className="mb-4" onClick={handleMusicClick}>
+            <a className="hover:text-primary">Music</a>
+          </li>
+          <li className="mb-4" onClick={handleSettingsClick}>
+            <a className="hover:text-primary">Settings</a>
+          </li>
         </ul>
       </div>
     </div>
