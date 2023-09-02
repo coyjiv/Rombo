@@ -29,9 +29,9 @@ const ChatList = ({ searchText }) => {
 );
 
   return (
-    <div className="bg-purple-900 text-white p-4 rounded-md">
+    <div className="w-full bg-purple-900 text-white p-4 rounded-md">
       <h2 className="text-lg font-semibold mb-2 pl-4 ">Chats</h2>
-      <ul>
+      <ul className=' '>
       {filteredChats.map((chat) => (
         
           <li
