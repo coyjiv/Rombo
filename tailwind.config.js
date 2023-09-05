@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        'custom': 'inset 0 0 0 30px #53ea93',
+        'custom': 'inset 0 0 0 30px #ADD8E6',
       },
       fontFamily: {
         custom: ['Josefin Sans', 'Open Sans', 'sans'], 

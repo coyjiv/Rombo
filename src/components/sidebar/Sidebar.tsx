@@ -26,40 +26,45 @@ const Sidebar = () => {
     setIsSearchIcon(true);
   };
 
+  const handleBackToChatList = (pageName: string) => {
+    setCurrentPage(pageName);
+  };
+
   const handleProfileClick = () => {
-    setCurrentPage("profile");
+    handleBackToChatList("profile");
   };
 
   const handleFriendsClick = () => {
-    setCurrentPage("friends");
+    handleBackToChatList("friends");
   };
 
   const handleMusicClick = () => {
-    setCurrentPage("music");
+    handleBackToChatList("music");
   };
 
   const handleSettingsClick = () => {
-    setCurrentPage("settings");
+    handleBackToChatList("settings");
   };
 
+  
   let currentContent;
 
-  switch (currentPage) {
-    case "profile":
-      currentContent = <Profile />;
-      break;
-    case "friends":
-      currentContent = <Friends />;
-      break;
-    case "music":
-      currentContent = <Music />;
-      break;
-    case "settings":
-      currentContent = <Settings />;
-      break;
-    default:
-      currentContent = <ChatList searchText={searchText} />;
-  }
+switch (currentPage) {
+  case "profile":
+    currentContent = <Profile handleBackToChatList={handleBackToChatList}/>;
+    break;
+  case "friends":
+    currentContent = <Friends handleBackToChatList={handleBackToChatList} />;
+    break;
+  case "music":
+    currentContent = <Music handleBackToChatList={handleBackToChatList} />;
+    break;
+  case "settings":
+    currentContent = <Settings handleBackToChatList={handleBackToChatList} />;
+    break;
+  default:
+    currentContent = <ChatList searchText={searchText} />;
+}
 
 
   return (
