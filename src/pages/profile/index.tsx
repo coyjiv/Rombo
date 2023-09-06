@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { faker } from "@faker-js/faker";
-import { RxAvatar, RxCross1 } from "react-icons/rx";
+import { RxAvatar} from "react-icons/rx";
 import { FaEdit } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
-import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 const generateFakeProfileData = () => {
@@ -20,12 +19,12 @@ const generateFakeProfileData = () => {
   return profile;
 };
 
-const Profile = ({ handleBackToChatList }) => {
+const Profile = ({ handleBackToChatList, openGallery}) => {
   const [profileData, setProfileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState("/img/avatar.webp");
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [isRxCrossVisible, setIsRxCrossVisible] = useState(false);
   const imageInputRef = useRef(null);
 
   useEffect(() => {
@@ -63,21 +62,14 @@ const Profile = ({ handleBackToChatList }) => {
   };
 
   const handleImageClick = () => {
-    setIsGalleryOpen(true);
+    openGallery([
+      {
+        original: selectedImage,
+        thumbnail: selectedImage,
+      },
+    ]);
   };
-
-  const handleGalleryCloseClick = () => {
-    setIsGalleryOpen(false);
-  };
-
-  const images = [
-    {
-      original: selectedImage,
-      thumbnail: selectedImage,
-    },
-    // Добавьте другие изображения по аналогии
-  ];
-
+  
   return (
     <div className="w-full p-4 mt-12 rounded-lg bg-medium-purple shadow-2xl">
       <div className="flex justify-between p-4">
@@ -148,23 +140,7 @@ const Profile = ({ handleBackToChatList }) => {
         </div>
       </ul>
 
-      {isGalleryOpen && (
-        <div className="image-gallery-container">
-          <div
-            className="image-gallery-background"
-            onClick={handleGalleryCloseClick}
-          ></div>
-          <div className="image-gallery flex">
-            <button
-              className=" rounded-full hover:bg-dark-purple duration-300 text-xl"
-              onClick={handleGalleryCloseClick}
-            >
-              <RxCross1 />
-            </button>
-            <ImageGallery items={images} />
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

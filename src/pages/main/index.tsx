@@ -1,34 +1,33 @@
 import Sidebar from '@/components/sidebar/Sidebar'
-import React from 'react'
-import ImageGallery from "react-image-gallery";
-
-const images = [
-  {
-    original: "https://picsum.photos/id/1018/1000/600/",
-    thumbnail: "https://picsum.photos/id/1018/250/150/",
-  },
-  {
-    original: "https://picsum.photos/id/1015/1000/600/",
-    thumbnail: "https://picsum.photos/id/1015/250/150/",
-  },
-  {
-    original: "https://picsum.photos/id/1019/1000/600/",
-    thumbnail: "https://picsum.photos/id/1019/250/150/",
-  },
-];
-
+import React, { useState } from 'react'
+import Gallery from '@/components/gallery/Gallery'
 
 const Main = () => {
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false); // Состояние открытой галереи
+  const [galleryImages, setGalleryImages] = useState([]); // Состояние изображений для галереи
+
+
+  const openGallery = (images) => {
+    setGalleryImages(images);
+    setIsGalleryOpen(true);
+  };
+
+  const closeGallery = () => {
+    setGalleryImages([]);
+    setIsGalleryOpen(false);
+  };
+
   return (
     <div className="flex">
-      <div className="lg:w-1/3 bg-dark-purple overflow-y-auto" >
-        <Sidebar/>
+      <div className="lg:w-1/3 bg-dark-purple overflow-y-auto">
+        <Sidebar openGallery={openGallery} /> 
       </div>
       <div className="lg:w-2/3 text-white overflow-y-auto">
-      <ImageGallery items={images} />
+    
       </div>
+        <Gallery images={galleryImages} isOpen={isGalleryOpen} onClose={closeGallery} />
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

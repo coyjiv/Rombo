@@ -10,7 +10,7 @@ import Music from "@/pages/music";
 import Settings from "@/pages/settings"; 
 
 
-const Sidebar = () => {
+const Sidebar = ({openGallery}) => {
   const [isOpen, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [isSearchIcon, setIsSearchIcon] = useState(true);
@@ -51,7 +51,7 @@ const Sidebar = () => {
 
 switch (currentPage) {
   case "profile":
-    currentContent = <Profile handleBackToChatList={handleBackToChatList}/>;
+    currentContent = <Profile openGallery={openGallery} handleBackToChatList={handleBackToChatList}/>;
     break;
   case "friends":
     currentContent = <Friends handleBackToChatList={handleBackToChatList} />;
