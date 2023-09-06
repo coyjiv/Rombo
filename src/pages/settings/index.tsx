@@ -12,9 +12,7 @@ const Settings = ({ handleBackToChatList }) => {
         >
           <BiArrowBack />
         </button>
-        <button className="text-white p-[6px] w-15 h-15 text-2xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 ">
-          <FaEdit />
-        </button>
+       
       </div>
     </div>
   );

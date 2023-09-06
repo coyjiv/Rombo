@@ -81,9 +81,9 @@ switch (currentPage) {
               onChange={handleInputChange}
             />
             <div className="absolute inset-y-1 right-2 flex items-center">
-              <div className="text-white text-2xl rounded-full py-3 px-2 overflow-hidden">
+              <div className="text-white text-2xl rounded-full py-2 px-2 overflow-hidden">
                 {!isSearchIcon && (
-                  <button className="absolute inset-y-0 right-0 py-3 px-2 rounded-full bg-dark-purple w-10 h-10" onClick={handleClearClick}>
+                  <button className="absolute top-1 right-0 p-2 rounded-full hover:bg-dark-purple duration-300 text-xl" onClick={handleClearClick}>
                     <RxCross1 />
                   </button>
                 )}
