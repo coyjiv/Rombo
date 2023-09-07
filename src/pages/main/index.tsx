@@ -18,7 +18,7 @@ const Main = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="body flex min-h-screen  items-center justify-center min-w-min-320">
       <div className="lg:w-1/3 bg-dark-purple overflow-y-auto">
         <Sidebar openGallery={openGallery} /> 
       </div>

@@ -19,5 +19,5 @@ export default function Home() {
   // }, [user]);
   // console.log(user);
 
-  return <div><Main/></div>;
+  return <div><Main /></div>;
 }
