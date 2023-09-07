@@ -6,7 +6,7 @@ import Image from "next/image";
 
 type Props = {};
 
-const Friends = ({ handleBackToChatList }) => {
+const Friends = ({ handleBackToChatList }:any) => {
 
   const generateFakeFriendsData = () => {
     const friends = Array.from({ length: 10 }, () => ({

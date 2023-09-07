@@ -7,7 +7,7 @@ const Main = () => {
   const [galleryImages, setGalleryImages] = useState([]); // Состояние изображений для галереи
 
 
-  const openGallery = (images) => {
+  const openGallery = (images:any) => {
     setGalleryImages(images);
     setIsGalleryOpen(true);
   };

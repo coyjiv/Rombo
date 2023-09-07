@@ -10,7 +10,7 @@ import Music from "@/pages/music";
 import Settings from "@/pages/settings"; 
 
 
-const Sidebar = ({openGallery}) => {
+const Sidebar = ({openGallery}:any) => {
   const [isOpen, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [isSearchIcon, setIsSearchIcon] = useState(true);
