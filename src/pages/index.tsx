@@ -1,23 +1,23 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Counter from "@/components/Counter";
-import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/hooks";
-import { useRouter } from "next/router";
-import Main from "./main";
+
+import { Inter } from 'next/font/google'
+import { AuthCheck } from '@/components/AuthCheck'
+import { SignInButton, SignOutButton } from '@/components/buttons'
+import { useSession } from 'next-auth/react'
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
-  // const user = useAppSelector((state) => state.user);
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!user.isLoggedIn) {
-  //     router.replace("/login")
-  //   }
-  // }, [user]);
-  // console.log(user);
-
-  return <div><Main /></div>;
+function Home() {
+  const session = useSession()
+  console.log(session)
+  return (
+    <AuthCheck>
+      <div className='p-4'>
+        <h1 className='text-3xl font-medium'>Dashboard</h1>
+        <div className='mt-10'><SignOutButton/></div>
+        <SignInButton/>
+      </div>
+    </AuthCheck>
+  )
 }
+
+export default Home; 
