@@ -4,11 +4,23 @@ import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import InputField from "@/components/InputField";
 import Link from 'next/link';
+import { SignInButton, SignOutButton } from '@/components/buttons';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import {useRouter} from 'next/router';
 type Props = {};
 import { AiFillMail } from "react-icons/ai";
 
 
 const LoginPage = (props: Props) => {
+  const session = useSession()
+  const router = useRouter()
+  console.log(session);
+  useEffect(()=>{
+    if(session.status === 'authenticated') {
+      router.push('/')
+    }
+  },[router, session.status])
   const validate = Yup.object({
   
     email: Yup.string().email("Email is invalid!").required("Email Required!"),
@@ -21,7 +33,10 @@ const LoginPage = (props: Props) => {
     
   };
   return (
-    <div className="font-custom h-screen w-screen bg-customImage">
+    <div>
+      <SignInButton/>
+      {/* <SignOutButton/> */}
+      <div className="font-custom h-screen w-screen bg-customImage">
   <h1 className="text-5xl text-white flex justify-center items-center pt-12 pb-6">
     ROMBO
   </h1>
@@ -74,7 +89,8 @@ const LoginPage = (props: Props) => {
     )}
   </Formik>
 </div>
-  );
+    </div>
+  )
 }
 export default LoginPage;
 

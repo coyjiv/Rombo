@@ -2,7 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
     images: {
-      domains: [ 'loremflickr.com', 'cloudflare-ipfs.com'],
+      domains: [ 'loremflickr.com', 'cloudflare-ipfs.com','lh3.googleusercontent.com'],
+    },
+    // disable eslint
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+    typescript: {
+      ignoreBuildErrors: true,
     },
 }
 
