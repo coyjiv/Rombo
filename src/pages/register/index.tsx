@@ -10,6 +10,7 @@ import { AiFillMail } from "react-icons/ai";
 import {AiFillDatabase} from "react-icons/ai"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useRouter } from "next/router";
 
 const RegistrationPage = (props: Props) => {
   const validate = Yup.object({
@@ -38,6 +39,7 @@ const RegistrationPage = (props: Props) => {
     confirmPassword: "",
     checkbox: "",
   };
+  const router = useRouter();
 
   return (
     <div className="min-h-screen w-full font-custom bg-customImage">
@@ -72,7 +74,9 @@ const RegistrationPage = (props: Props) => {
           })
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
-          // actions.resetForm();
+          actions.resetForm();
+          alert("You have successfully registered!");
+          router.push("/api/auth/signin");
         }}
       >
         {(formik) => (
