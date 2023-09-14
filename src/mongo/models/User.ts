@@ -20,6 +20,7 @@ const userSchema = new Schema<IUser>(
   fullName: {
     type: String,
     required: [true, 'Please enter a full name'],
+    select: true,
     minLength: [3, 'Name must be at least 3 characters long'],
     maxLength: [32, 'Name cannot be more than 32 characters long'],
   }, 

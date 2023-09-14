@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const user = User.create({
                 fullName,
                 email,
-                // senderId: new mongoose.Types.ObjectId().toString(),
+                senderId: new mongoose.Types.ObjectId().toString(),
                 password: hashedPassword
             })
 

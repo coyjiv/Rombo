@@ -11,6 +11,9 @@ export default NextAuth({
   session: {
     strategy: 'jwt',
   },
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -27,18 +30,17 @@ export default NextAuth({
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password", placeholder: "********" }
       },
+      //@ts-ignore
       async authorize(credentials, req) {
         connectDb();
         const foundUser = await User.findOne({ email: credentials?.username });
-        console.log(foundUser);
+        // console.log(foundUser);
 
-        console.log(credentials?.password);
-
-        console.log(await compare(credentials?.password, foundUser?.password));
+        // console.log(credentials?.password);
         
 
   
-        if (foundUser && credentials?.password !== undefined) {
+        if (foundUser && credentials?.password !== undefined && await compare(credentials?.password, foundUser?.password)) {
           // Return the user object, but make sure not to return the hashed password
           const { password, ...userWithoutPassword } = foundUser.toObject();
           return userWithoutPassword;
@@ -51,25 +53,10 @@ export default NextAuth({
       }
     })
   ],
-  events: {
-    async createUser({ user }) { // Destructure to fetch the user object
-      await connectDb();
-
-      // Check if user exists
-      const existingUser = await User.findOne({ email: user.email });
-
-      if (!existingUser) {
-        const newUser = new User({
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          googleId: user.id,
-        });
-        await newUser.save();
-      }
-    }
-  },
   callbacks:{
-    
+    async session({session, token}) {
+      session.user?.name // adjust based on your schema
+      return session;
+  },
   }
 });

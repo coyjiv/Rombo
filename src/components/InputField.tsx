@@ -18,7 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 relative">
       <div className="relative mt-1">
       <input 
           {...field}
@@ -46,7 +46,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )}
       </div>
       {meta.touched && meta.error && (
-        <div className="mt-2 text-md text-red-600">
+        <div className="mt-2 text-xs text-red-600 absolute -bottom-5 left-0">
           <ErrorMessage name={field.name} />
         </div>
       )}
