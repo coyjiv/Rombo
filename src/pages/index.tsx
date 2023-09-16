@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { AuthCheck } from '@/components/AuthCheck'
 import { SignInButton, SignOutButton } from '@/components/buttons'
 import { useSession } from 'next-auth/react'
-import Dashboard from '@/components/views/Dashboard';
+import Dashboard from './layout';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,7 +12,7 @@ function Home() {
   console.log(session)
   return (
     <AuthCheck>
-      <Dashboard/>
+      {/* <Dashboard/> */}
       {/* <div className='p-4 gradient-after-reg h-screen'>
         <h1 className='text-3xl font-medium'>Dashboard</h1>
         <div className='mt-10'><SignOutButton/></div>

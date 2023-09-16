@@ -9,12 +9,16 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      custom: ['Josefin Sans', 'Open Sans', 'sans'], 
+    },
     extend: {
       boxShadow: {
         'custom': 'inset 0 0 0 30px #ADD8E6',
       },
       fontFamily: {
-        custom: ['Josefin Sans', 'Open Sans', 'sans'], 
+        custom: ['Josefin Sans', 'sans'], 
+        open: ['Open Sans', 'sans'],
       },
       colors: {
         'light-pink': '#f2f5eb',

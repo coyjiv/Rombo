@@ -54,7 +54,7 @@ export default NextAuth({
     })
   ],
   callbacks:{
-    async session({session, token}) {
+    async session({session, user}) {
       session.user?.name // adjust based on your schema
       return session;
   },
