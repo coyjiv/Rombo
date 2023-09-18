@@ -9,26 +9,24 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      custom: ['Josefin Sans', 'Open Sans', 'sans'], 
+    },
     extend: {
       boxShadow: {
         'custom': 'inset 0 0 0 30px #ADD8E6',
       },
       fontFamily: {
-        custom: ['Josefin Sans', 'Open Sans', 'sans'], 
+        custom: ['Josefin Sans', 'sans'], 
+        open: ['Open Sans', 'sans'],
       },
       colors: {
         'light-pink': '#f2f5eb',
         'light-purple': '#96a4c1',
         'medium-purple': '#624fa1',
         'dark-purple': '#322852',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-          'customImage' : "url('/img/background-image5.jpg')",
-        },
+      }
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require('@tailwindcss/forms')],
 }

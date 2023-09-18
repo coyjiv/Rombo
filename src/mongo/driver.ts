@@ -7,8 +7,8 @@ const password = process.env.MONGO_PASSWORD
   ? encodeURIComponent(process.env.MONGO_PASSWORD)
   : '';
 
-const uri = `mongodb+srv://${username}:${password}@cluster1.9ftfskb.mongodb.net/?retryWrites=true&w=majority`;
-
+const uri = `mongodb+srv://${username}:${password}@cluster1.9ftfskb.mongodb.net/Rombo?retryWrites=true&w=majority`;
+ 
 // Define an interface for connection
 interface Connection {
   isConnected?: number;

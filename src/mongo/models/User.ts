@@ -1,16 +1,23 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IUser extends Document {
+  avatar: string | null;
   email: string;
+  bio : string;
   fullName: string;
+  friends: string[];
+  chatRooms: string[];
   password: string;
   googleId?: string;
-  bio : string;
   senderId: string;
 }
 
 const userSchema = new Schema<IUser>(
   {
+    avatar: {
+      type: String,
+      default: null,
+    },
   email: {
     type: String,
     unique: true,
@@ -20,6 +27,7 @@ const userSchema = new Schema<IUser>(
   fullName: {
     type: String,
     required: [true, 'Please enter a full name'],
+    select: true,
     minLength: [3, 'Name must be at least 3 characters long'],
     maxLength: [32, 'Name cannot be more than 32 characters long'],
   }, 
@@ -28,6 +36,14 @@ const userSchema = new Schema<IUser>(
     required: [true, 'Please enter a password'],
     minLength: [6, 'Password must be at least 6 characters long'],
     select: true,
+  },
+  friends: {
+    type: [String],
+    default: [],
+  },
+  chatRooms: {
+    type: [String],
+    default: [],
   },
   googleId: {
     type: String,
