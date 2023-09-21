@@ -3,7 +3,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { RxCross1 } from "react-icons/rx";
 
-const Gallery = ({ images, isOpen, onClose }) => {
+const Gallery = ({ images, isOpen, onClose }:any) => {
   return (
     <div className={`fixed top-0 left-0 w-full h-full  flex justify-center items-center ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
       <div className={`absolute top-0 left-0 w-full h-full bg-black opacity-70 duration-100 ${isOpen ? "visible" : "invisible"}`} onClick={onClose}></div>
