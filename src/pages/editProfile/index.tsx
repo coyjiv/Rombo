@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 const EditProfile = ({
   setIsEditing,
   profileData,
-  setProfileData,
 }: //   openGallery,
 any) => {
   const [editedProfileData, setEditedProfileData] = useState({
@@ -69,7 +68,6 @@ any) => {
 
       if (response.status === 201) {
         console.log("Profile updated successfully");
-        setProfileData(editedProfileData);
         setIsEditing(false);
       } else {
       }
