@@ -7,13 +7,15 @@ import Link from "next/link";
 type Props = {};
 import { FaUser } from "react-icons/fa";
 import { AiFillMail } from "react-icons/ai";
-import {AiFillDatabase} from "react-icons/ai"
+import { AiFillDatabase } from "react-icons/ai";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/router";
 import { FormSubmitButton } from "@/components/buttons";
 import { DefaultContainer } from "@/components/layout/containers";
 import Checkbox from "@/components/Checkbox";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegistrationPage = (props: Props) => {
   const validate = Yup.object({
@@ -45,18 +47,20 @@ const RegistrationPage = (props: Props) => {
   const router = useRouter();
 
   // TODO: Add a stepper
+  // Todo: fix toastify - 18.09.23 Max
+  const notify = () => toast("You've been successfully registered");
 
   return (
     <div className="min-h-screen w-full font-custom gradient-purple">
-        <DefaultContainer className="pt-20 pb-14">
-          <h1 className="text-5xl text-white flex justify-center items-center">
-            ROMBO
-          </h1>
+       <ToastContainer theme="light"  />
+      <DefaultContainer className="pt-20 pb-14">
+        <h1 className="text-5xl text-white flex justify-center items-center">
+          ROMBO
+        </h1>
         <Formik
           initialValues={initialValues}
           validationSchema={validate}
           onSubmit={(values, actions) => {
-  
             fetch("/api/auth/signup", {
               method: "POST",
               headers: {
@@ -72,8 +76,8 @@ const RegistrationPage = (props: Props) => {
               .then((res) => console.log(res))
               .catch((err) => console.log(err));
             actions.resetForm();
-            alert("You have successfully registered!");
             router.push("/api/auth/signin");
+            notify();
           }}
         >
           {(formik) => (
@@ -108,25 +112,24 @@ const RegistrationPage = (props: Props) => {
                 />
                 <div className="relative">
                   <DatePicker
-                 onKeyDown={(e) => e.preventDefault()} 
-                 
-                 onFocus={(e) => e.preventDefault()}
-                 placeholderText="Date of birth"
-                 selected={formik.values.date}
-                 onChange={(date) => formik.setFieldValue("date", date)}
-                 onBlur={formik.handleBlur("date")}
-                 showYearDropdown={true}
-                 yearDropdownItemNumber={100}
-                 scrollableYearDropdown 
-                 minDate={new Date(new Date().getFullYear() - 100, 0, 1)} 
-                 maxDate={new Date()} 
+                    onKeyDown={(e) => e.preventDefault()}
+                    onFocus={(e) => e.preventDefault()}
+                    placeholderText="Date of birth"
+                    selected={formik.values.date}
+                    onChange={(date) => formik.setFieldValue("date", date)}
+                    onBlur={formik.handleBlur("date")}
+                    showYearDropdown={true}
+                    yearDropdownItemNumber={100}
+                    scrollableYearDropdown
+                    minDate={new Date(new Date().getFullYear() - 100, 0, 1)}
+                    maxDate={new Date()}
                     className={`placeholder-dark-purple text-black text-lg block w-full py-2 px-4 mb-6 border rounded-md  ${
                       formik.touched.date && formik.errors.date
                         ? "border-red-500 mb-0 duration-0 "
                         : "border-gray-300 "
                     } focus:outline-none focus:ring focus:border-blue-500 duration-500 pb-1 relative`}
                   />
-                   {formik.touched.date && formik.errors.date && (
+                  {formik.touched.date && formik.errors.date && (
                     <div className="text-xs absolute -bottom-0 text-red-600">
                       {formik.errors.date}
                     </div>
@@ -145,18 +148,23 @@ const RegistrationPage = (props: Props) => {
                   showPasswordToggle={true}
                 />
                 <div className="flex justify-between gap-1 mt-12 mb-5">
-                  <p className="text-sm">By checking this box, I agree to terms of the service</p>
-                  <Checkbox onChange={()=>formik.setFieldValue("checkbox", !formik.values.checkbox)} checked={formik.values.checkbox} label=""/>
+                  <p className="text-sm">
+                    By checking this box, I agree to terms of the service
+                  </p>
+                  <Checkbox
+                    onChange={() =>
+                      formik.setFieldValue("checkbox", !formik.values.checkbox)
+                    }
+                    checked={formik.values.checkbox}
+                    label=""
+                  />
                 </div>
-                <FormSubmitButton>
-                  Register
-                </FormSubmitButton>
-               
+                <FormSubmitButton>Register</FormSubmitButton>
               </Form>
             </div>
           )}
         </Formik>
-        </DefaultContainer>
+      </DefaultContainer>
     </div>
   );
 };

@@ -7,6 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await connectDb()
 
     const session = await getSession({ req });
+    console.log("session", session)
     if (!session) {
         return res.status(401).json({ error: "Not authorized" });
     }
