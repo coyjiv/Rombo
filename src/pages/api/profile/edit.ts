@@ -1,12 +1,13 @@
 import connectDb from "@/mongo/driver"
 import User from "@/mongo/models/User"
 import { NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth/next"
+import authOptions from "../auth/[...nextauth]"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await connectDb()
 
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, authOptions)
     console.log("session", session)
     if (!session) {
         return res.status(401).json({ error: "Not authorized" });

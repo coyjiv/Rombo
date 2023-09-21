@@ -7,6 +7,7 @@ import { BiArrowBack } from "react-icons/bi";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 
 const Profile = ({}) => {
   const session = useSession();
@@ -14,7 +15,9 @@ const Profile = ({}) => {
   console.log(session);
   const prefixUser = session?.data?.user;
 
-  const [profileData, setProfileData] = useState<null | any>(null);
+  const profileData = useGetUserDetails();
+
+  console.log("profile data", profileData);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
@@ -68,7 +71,6 @@ const Profile = ({}) => {
         <EditProfile
           setIsEditing={setIsEditing}
           profileData={profileData}
-          setProfileData={setProfileData}
         />
       ) : (
         <div>
