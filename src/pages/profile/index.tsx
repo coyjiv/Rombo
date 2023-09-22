@@ -80,9 +80,9 @@ const Profile = ({}) => {
               // onClick={handleImageClick}
             >
               <div className="text-gray-300 font-bold text-2xl mb-1">
-                {prefixUser?.name} 
+                {profileData?.fullName} 
               </div>
-              {/* <div className="text-gray-300">{bio}</div> */}
+              <div className="text-gray-300">{profileData?.bio}</div>
             </div>
             <div className="flex">
               <Image
@@ -108,7 +108,7 @@ const Profile = ({}) => {
           <ul className="grid gap-4 p-4 text-white">
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
               <li className="font-bold">Email</li>
-              {prefixUser?.email}
+              {profileData?.email}
             </div>
 
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">

@@ -5,6 +5,8 @@ export interface IUser extends Document {
   email: string;
   bio : string;
   fullName: string;
+  nickname: string;
+  phone: string;
   friends: string[];
   chatRooms: string[];
   password: string;

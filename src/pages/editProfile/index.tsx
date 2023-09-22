@@ -4,6 +4,8 @@ import { RxAvatar } from "react-icons/rx";
 import Gallery from "@/components/gallery/Gallery";
 import { BiArrowBack } from "react-icons/bi";
 import { useSession } from "next-auth/react";
+import { Field, Form, Formik } from "formik";
+import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 
 const EditProfile = ({
   setIsEditing,
@@ -15,10 +17,13 @@ any) => {
   });
   const session = useSession();
   console.log(session);
-  const prefixUser = session?.data?.user;
+  const prefixUser = useGetUserDetails();
+  const fullName = prefixUser?.fullName; 
+  const firstName = fullName?.split(' ')[0];
+  const lastName = fullName?.split(' ')[1];
 
   const [selectedImage, setSelectedImage] = useState(
-    prefixUser?.image ?? "/img/avatar.webp"
+    prefixUser?.avatar ?? "/img/avatar.webp"
   );
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const imageInputRef = useRef(null);
@@ -55,6 +60,11 @@ any) => {
 
   const saveProfile = async () => {
     try {
+      const updatedProfileData = {
+        ...editedProfileData,
+        fullName: `${editedProfileData.firstName} ${editedProfileData.lastName}`,
+      };
+
       const response = await fetch('/api/profile/edit', {
         method: 'POST',
         headers: {
@@ -62,7 +72,7 @@ any) => {
         },
         body: JSON.stringify({
           old: profileData,
-          newUser: editedProfileData,
+          newUser: updatedProfileData,
         }),
       });
 
@@ -91,7 +101,7 @@ any) => {
             // onClick={handleImageClick}
             className="rounded-xl w-1/4 shadow-slate-800 shadow-md cursor-pointer ml-4"
             alt="Avatar"
-            src={prefixUser?.image ?? "/img/avatar.webp"}
+            src={prefixUser?.avatar ?? "/img/avatar.webp"}
             width={200}
             height={200}
           />
@@ -107,78 +117,103 @@ any) => {
           <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
         </button>
       </div>
-      <div>
-        <ul className="grid gap-4 p-4 text-white">
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
-            <li className="font-bold">First name</li>
-            <input
-              className="py-2 bg-gray-600 w-full "
+      <Formik
+        initialValues={{
+          firstName:  "",
+          lastName:  "",
+          bio:  "",
+          phone:  "",
+          nickname:  "",
+        
+        }}
+       onSubmit={saveProfile}
+      >
+        <Form className="rounded-lg m-3">
+          {/* First name */}
+          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple rounded-t-lg duration-300  p-4">
+            <li className="list-none font-bold">First name</li>
+            <Field
+              placeholder={firstName}
               type="text"
-              id="name"
+              id="firstName"
               name="name"
-              value={editedProfileData.name}
-              onChange={handleInputChange}
+              className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
+          {/* <ErrorMessage name="name" component="div" /> */}
 
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
-            <li className="font-bold">Last name (optional)</li>
-            <input
-              className="py-2 bg-gray-600 w-full "
+          {/* Last name (optional) */}
+          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+            <li className="list-none font-bold">Last name (optional)</li>
+            <Field
+              placeholder={lastName}
+              type="text"
+              id="lastName"
+              name="lastName"
+              className="py-2 bg-gray-600 w-full rounded-lg "
+            />
+          </div>
+          {/* <ErrorMessage name="bio" component="div" /> */}
+
+          {/* Bio */}
+          <div className=" cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+            <li className="list-none font-bold">Bio</li>
+            <Field
+              placeholder={prefixUser?.bio}
               type="text"
               id="bio"
               name="bio"
-              value={editedProfileData.bio}
-              onChange={handleInputChange}
+              className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
 
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
-            <li className="font-bold">Email</li>
-            <input
-              className="py-2 bg-gray-600 w-full "
+           {/* Email */}
+           <div className="hidden cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+            <li className="list-none font-bold">Email</li>
+            <Field
+              placeholder={prefixUser?.email}
               type="text"
               id="email"
               name="email"
-              value={editedProfileData.email}
-              onChange={handleInputChange}
+              className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
 
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
-            <li className="font-bold">Phone number</li>
-
-            <input
-              className="py-2 bg-gray-600 w-full "
+           {/* Phone number */}
+           <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+            <li className="list-none font-bold">Phone number</li>
+            <Field
+              placeholder={prefixUser?.phone}
               type="text"
               id="phone"
               name="phone"
-              value={editedProfileData.phone}
-              onChange={handleInputChange}
+              className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
 
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
-            <li className="font-bold">Nickname</li>
-            <input
-              className="py-2 bg-gray-600 w-full "
+           {/* Nickname */}
+           <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4 rounded-b-lg">
+            <li className="list-none font-bold">Nickname</li>
+            <Field
+              placeholder={prefixUser?.nickname}
               type="text"
               id="nickname"
               name="nickname"
-              value={editedProfileData.nickname}
-              onChange={handleInputChange}
+              className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
-        </ul>
-      </div>
-      <div className="flex justify-between p-4">
-        <button className="btn btn-primary " onClick={saveProfile}>
+          
+          <div className="flex justify-between p-4">
+        <button className="btn btn-primary" type="submit">
           Save Profile
         </button>
         <button className="btn btn-danger" onClick={handleCancelEdit}>
           Cancel
         </button>
       </div>
+        </Form>
+      </Formik>
+      
       {isGalleryOpen && (
         <Gallery
           // images={galleryImages}
@@ -191,3 +226,7 @@ any) => {
 };
 
 export default EditProfile;
+
+
+
+
