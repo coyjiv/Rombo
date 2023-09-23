@@ -6,16 +6,21 @@ import { BiArrowBack } from "react-icons/bi";
 import { useSession } from "next-auth/react";
 import { Field, Form, Formik } from "formik";
 import { useGetUserDetails } from "@/helpers/useGetUserDetails";
+import { IUser } from "@/mongo/models/User";
+import { UserProfile } from "@/types";
+import { useAppDispatch } from "@/app/hooks";
+import { updateProfile } from "@/app/slices/userSlice";
 
 const EditProfile = ({
   setIsEditing,
   profileData,
 }: //   openGallery,
 any) => {
-  const [editedProfileData, setEditedProfileData] = useState({
-    ...profileData,
-  });
+  // const [editedProfileData, setEditedProfileData] = useState({
+  //   ...profileData,
+  // });
   const session = useSession();
+  const dispatch = useAppDispatch();
   console.log(session);
   const prefixUser = useGetUserDetails();
   const fullName = prefixUser?.fullName; 
@@ -30,16 +35,16 @@ any) => {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setEditedProfileData({ ...profileData });
+    // setEditedProfileData({ ...profileData });
   };
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setEditedProfileData((prevData: any) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+const profileValues = {
+  firstName:  "",
+  lastName:  "",
+  bio:  "",
+  phone:  "",
+  nickname:  "",    
+}
 
   // const handleImageSelect = (e: any) => {
   //   const file = e.target.files[0];
@@ -58,11 +63,14 @@ any) => {
   //   },
   // ];
 
-  const saveProfile = async () => {
+  const saveProfile = async (values:UserProfile) => {
     try {
       const updatedProfileData = {
-        ...editedProfileData,
-        fullName: `${editedProfileData.firstName} ${editedProfileData.lastName}`,
+        ...profileData, 
+        fullName: `${values.firstName} ${values.lastName}`,
+        bio: values.bio,
+        phone: values.phone,
+        nickname: values.nickname,
       };
 
       const response = await fetch('/api/profile/edit', {
@@ -79,6 +87,7 @@ any) => {
       if (response.status === 201) {
         console.log("Profile updated successfully");
         setIsEditing(false);
+        dispatch(updateProfile(updatedProfileData))
       } else {
       }
     } catch (error) {
@@ -118,15 +127,8 @@ any) => {
         </button>
       </div>
       <Formik
-        initialValues={{
-          firstName:  "",
-          lastName:  "",
-          bio:  "",
-          phone:  "",
-          nickname:  "",
-        
-        }}
-       onSubmit={saveProfile}
+        initialValues={profileValues}
+       onSubmit={(values)=>{saveProfile(values)}}
       >
         <Form className="rounded-lg m-3">
           {/* First name */}
@@ -136,7 +138,7 @@ any) => {
               placeholder={firstName}
               type="text"
               id="firstName"
-              name="name"
+              name="firstName"
               className="py-2 bg-gray-600 w-full rounded-lg"
             />
           </div>
