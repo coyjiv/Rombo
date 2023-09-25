@@ -20,12 +20,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const {email:oldEmail} = old
 
-        console.log(oldEmail, newUser)
-
-
         const userExists = await User.findOne({ email:oldEmail })
 
-        console.log(userExists)
 
         if (userExists) {
             try {

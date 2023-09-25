@@ -75,6 +75,7 @@ const RegistrationPage = (props: Props) => {
             })
               .then((res) => console.log(res))
               .catch((err) => console.log(err));
+              // todo: properly handle mongoose errors 
             actions.resetForm();
             router.push("/api/auth/signin");
             notify();

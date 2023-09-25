@@ -12,6 +12,7 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
 
 
     if(req.method === "GET"){
+        // @ts-ignore 
         const email = session?.user?.email        
         if(!email) return res.status(400).json({error:"Email is missing"})
         const user = await User.findOne({email})
