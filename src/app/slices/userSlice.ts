@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { login } from "../actions";
 import { User, UserProfile } from "@/types";
+import { fetchCurrentUser, fetchCurrentProfile, updateProfile } from "../actions/user";
 
 interface UserSlice {
   profile: UserProfile,
-  user: User[] | [];
+  user: User;
   activeChatRoom: any;
-//   error: Error;
+  error: any;
+  isLoading: boolean;
 }
 
 const initialState = {
@@ -14,17 +15,41 @@ const initialState = {
     user: {},
     activeChatRoom: {},
     error: { error: "" },
+    isLoading: true,
 } as unknown as UserSlice;
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateProfile(state, action) {
-        state.profile = action.payload;
-    },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.error = { error: "" };
+      state.isLoading = false;
+    }
+    );
+    builder.addCase(fetchCurrentUser.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(fetchCurrentProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.error = { error: "" };
+      state.isLoading = false;
+    }
+    );
+    builder.addCase(fetchCurrentProfile.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    }
+    );
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.error = { error: "" };
+    });
+  }
 });
 
-export const { updateProfile } = userSlice.actions;
 export const userReducer = userSlice.reducer;

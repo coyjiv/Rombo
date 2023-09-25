@@ -9,87 +9,56 @@ import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 import { IUser } from "@/mongo/models/User";
 import { UserProfile } from "@/types";
 import { useAppDispatch } from "@/app/hooks";
-import { updateProfile } from "@/app/slices/userSlice";
+import { updateProfile } from "@/app/actions/user";
+import { useGetUserProfile } from "@/helpers/useGetUserProfile";
 
 const EditProfile = ({
   setIsEditing,
-  profileData,
-}: //   openGallery,
+  profileData
+}:
 any) => {
-  // const [editedProfileData, setEditedProfileData] = useState({
-  //   ...profileData,
-  // });
-  const session = useSession();
+
   const dispatch = useAppDispatch();
-  console.log(session);
-  const prefixUser = useGetUserDetails();
-  const fullName = prefixUser?.fullName; 
-  const firstName = fullName?.split(' ')[0];
-  const lastName = fullName?.split(' ')[1];
+
+
+  console.log("profileData", profileData);
+
+  const firstName = profileData?.firstName;
+  const lastName = profileData?.lastName;
+
 
   const [selectedImage, setSelectedImage] = useState(
-    prefixUser?.avatar ?? "/img/avatar.webp"
+    profileData?.avatar ?? "/img/avatar.webp"
   );
+
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const imageInputRef = useRef(null);
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    // setEditedProfileData({ ...profileData });
   };
 
-const profileValues = {
-  firstName:  "",
-  lastName:  "",
-  bio:  "",
-  phone:  "",
-  nickname:  "",    
-}
-
-  // const handleImageSelect = (e: any) => {
-  //   const file = e.target.files[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     setSelectedImage(URL.createObjectURL(file));
-  //   }
-  // };
-
-  // const handleImageClick = () => {
-  //   setIsGalleryOpen(true);
-  // };
-  // const galleryImages = [
-  //   {
-  //     original: selectedImage,
-  //     thumbnail: selectedImage,
-  //   },
-  // ];
+  const profileValues = {
+    firstName: profileData?.firstName ?? "",
+    lastName: profileData?.lastName ?? "",
+    bio: profileData?.bio ?? "",
+    phone: profileData?.phone ?? "",
+    nickname: profileData?.nickname ?? "",
+  };
+  
 
   const saveProfile = async (values:UserProfile) => {
     try {
       const updatedProfileData = {
         ...profileData, 
         fullName: `${values.firstName} ${values.lastName}`,
-        bio: values.bio,
-        phone: values.phone,
-        nickname: values.nickname,
+        bio: values.bio || "",
+        phone: values.phone || "",
+        nickname: values.nickname  || "",
       };
 
-      const response = await fetch('/api/profile/edit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          old: profileData,
-          newUser: updatedProfileData,
-        }),
-      });
+        dispatch(updateProfile({old: profileData, newUser: updatedProfileData}))
 
-      if (response.status === 201) {
-        console.log("Profile updated successfully");
-        setIsEditing(false);
-        dispatch(updateProfile(updatedProfileData))
-      } else {
-      }
     } catch (error) {
       console.error("An error occurred while updating the profile:", error);
     }
@@ -110,7 +79,7 @@ const profileValues = {
             // onClick={handleImageClick}
             className="rounded-xl w-1/4 shadow-slate-800 shadow-md cursor-pointer ml-4"
             alt="Avatar"
-            src={prefixUser?.avatar ?? "/img/avatar.webp"}
+            src={profileData?.avatar ?? "/img/avatar.webp"}
             width={200}
             height={200}
           />
@@ -130,12 +99,14 @@ const profileValues = {
         initialValues={profileValues}
        onSubmit={(values)=>{saveProfile(values)}}
       >
+        {({ errors, touched, values }) => (
         <Form className="rounded-lg m-3">
           {/* First name */}
           <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple rounded-t-lg duration-300  p-4">
             <li className="list-none font-bold">First name</li>
             <Field
               placeholder={firstName}
+              value={values.firstName}
               type="text"
               id="firstName"
               name="firstName"
@@ -149,6 +120,7 @@ const profileValues = {
             <li className="list-none font-bold">Last name (optional)</li>
             <Field
               placeholder={lastName}
+              value={values.lastName}
               type="text"
               id="lastName"
               name="lastName"
@@ -160,32 +132,36 @@ const profileValues = {
           {/* Bio */}
           <div className=" cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
             <li className="list-none font-bold">Bio</li>
-            <Field
-              placeholder={prefixUser?.bio}
-              type="text"
-              id="bio"
-              name="bio"
-              className="py-2 bg-gray-600 w-full rounded-lg"
-            />
+              <Field
+                placeholder={profileData?.bio ?? ""}
+                value={values.bio}
+                type="text"
+                id="bio"
+                name="bio"
+                className="py-2 bg-gray-600 w-full rounded-lg"
+              />
+
           </div>
 
            {/* Email */}
-           <div className="hidden cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+           {/* <div className="hidden cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
             <li className="list-none font-bold">Email</li>
             <Field
-              placeholder={prefixUser?.email}
+              placeholder={profileData?.email}
+              value={values.email}
               type="text"
               id="email"
               name="email"
               className="py-2 bg-gray-600 w-full rounded-lg"
             />
-          </div>
+          </div> */}
 
            {/* Phone number */}
            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
             <li className="list-none font-bold">Phone number</li>
             <Field
-              placeholder={prefixUser?.phone}
+              placeholder={profileData?.phone}
+              value={values.phone}
               type="text"
               id="phone"
               name="phone"
@@ -197,7 +173,8 @@ const profileValues = {
            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4 rounded-b-lg">
             <li className="list-none font-bold">Nickname</li>
             <Field
-              placeholder={prefixUser?.nickname}
+              placeholder={profileData?.nickname}
+              value={values.nickname}
               type="text"
               id="nickname"
               name="nickname"
@@ -214,6 +191,7 @@ const profileValues = {
         </button>
       </div>
         </Form>
+        )}
       </Formik>
       
       {isGalleryOpen && (

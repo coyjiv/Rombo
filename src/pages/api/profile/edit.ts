@@ -20,14 +20,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const {email:oldEmail} = old
 
+        console.log("old usah", old, "new usah", newUser);
+        
+
         const userExists = await User.findOne({ email:oldEmail })
 
 
         if (userExists) {
             try {
                 Object.assign(userExists, newUser);
-                await userExists.save();
-                return res.status(201).json({ message: "User updated successfully" });
+                await userExists.save().then((res) => console.log("res", res));
+                return res.status(201).json({ ...newUser });
             } catch (error) {
                 return res.status(409).json({ error: "User could not be updated" });
             }
