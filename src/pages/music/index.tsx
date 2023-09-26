@@ -3,10 +3,11 @@ import { BiArrowBack } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import { faker } from "@faker-js/faker"; 
 import Image from "next/image";
+import { PagesContainer } from "@/components/layout/containers";
 
 type Props = {};
 
-const Music = ({ handleBackToChatList }) => {
+const Music = () => {
   // Генерируем фейковые данные для страницы музыки
   const generateFakeMusicData = () => {
     const music = {
@@ -30,10 +31,9 @@ const Music = ({ handleBackToChatList }) => {
   const musicData = generateFakeMusicData();
 
   return (
-    <div className="w-full p-4 mt-12 rounded-lg bg-medium-purple shadow-2xl">
+    <PagesContainer>
       <div className="flex justify-between p-4">
         <button
-          onClick={handleBackToChatList}
           className="text-white p-[6px] w-15 h-15 text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
         >
           <BiArrowBack />
@@ -72,7 +72,7 @@ const Music = ({ handleBackToChatList }) => {
           ))}
         </ul>
       </div>
-    </div>
+    </PagesContainer>
   );
 };
 

@@ -15,23 +15,11 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
     }
 
     if(req.method === "GET"){
-        // @ts-ignore 
-        const email = session?.user?.email        
-        if(!email) return res.status(400).json({error:"Email is missing"})
-        const user = await User.findOne({email})
-        if(!user) return res.status(400).json({error:"User not found"})
-        console.log("user", user);
-        
-        return res.status(200).json({data:{
-            email:user.email,
-            firstName: user.fullName.split(" ")[0],
-            lastName: user.fullName.split(" ")[1],
-            nickname: user.nickname,
-            bio: user.bio,
-            phone: user.phone,
-            avatar: user.avatar
-        }})
-
+        const searchString = req.query.searchString     
+        if(!searchString) return res.status(400).json({error:"SearchString is missing"})
+        const users = await User.find({fullName:{$regex:searchString, $options:"i", }})
+        if(!users) return res.status(400).json({error:"Users not found"})
+        return res.status(200).json({data:users})
     } else {
         res.status(405).json({error:"Method not allowed"})
     }

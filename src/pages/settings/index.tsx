@@ -1,4 +1,5 @@
 import DarkModeButton from "@/buttons/DarkModeButton";
+import { PagesContainer } from "@/components/layout/containers";
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
@@ -6,7 +7,6 @@ import { FaEdit } from "react-icons/fa";
 const Settings = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [language, setLanguage] = useState("en");
 
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
@@ -16,12 +16,9 @@ const Settings = () => {
     setNotificationsEnabled((prev) => !prev);
   };
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
 
   return (
-    <div className="w-full p-4 mt-12 rounded-lg bg-medium-purple shadow-2xl">
+    <PagesContainer>
       <div className="flex justify-between p-4">
         <button
           onClick={()=>{}}
@@ -63,7 +60,7 @@ const Settings = () => {
         </div>
         <DarkModeButton />
       </div>
-    </div>
+    </PagesContainer>
   );
 };
 

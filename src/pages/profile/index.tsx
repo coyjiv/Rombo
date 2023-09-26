@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import EditProfile from "../editProfile";
+import EditProfile from "../../components/views/EditProfile";
 import Image from "next/image";
 import { RxAvatar } from "react-icons/rx";
 import { FaEdit } from "react-icons/fa";
@@ -8,16 +8,20 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useGetUserDetails } from "@/helpers/useGetUserDetails";
+import { useGetUserProfile } from "@/helpers/useGetUserProfile";
+import { useAppSelector } from "@/app/hooks";
+import { PagesContainer } from "@/components/layout/containers";
 
 const Profile = ({}) => {
   const session = useSession();
 
-  console.log(session);
   const prefixUser = session?.data?.user;
 
-  const profileData = useGetUserDetails();
+  const isLoading = useAppSelector(({user:{isLoading}}) => isLoading)
+  
+  const userData = useGetUserDetails();
+  const profile = useGetUserProfile();
 
-  console.log("profile data", profileData);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
@@ -48,12 +52,20 @@ const Profile = ({}) => {
 
   const router = useRouter();
 
+  if(isLoading){
+    // return tailwind spinner
+
+    return <div className="flex justify-center items-center mt-52">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
+    </div>
+  }
+
   return (
-    <div className="w-full p-4 mt-12 rounded-lg bg-medium-purple shadow-2xl">
+    <PagesContainer>
       {!isEditing ? (
         <div className="flex justify-between p-4">
           <button
-            onClick={() => router.push("./")}
+            onClick={() => router.back()}
             className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
           >
             <BiArrowBack />
@@ -70,27 +82,26 @@ const Profile = ({}) => {
       {isEditing ? (
         <EditProfile
           setIsEditing={setIsEditing}
-          profileData={profileData}
+          profileData={profile}
         />
       ) : (
         <div>
-          <div className="flex justify-between mb-4">
+          <div className="flex flex-col-reverse md:flex-row justify-between mb-4">
             <div
               className="mb-4 p-4 duration-300 border-dark-purple cursor-pointer"
               // onClick={handleImageClick}
             >
               <div className="text-gray-300 font-bold text-2xl mb-1">
-                {profileData?.fullName} 
+                {userData?.fullName} 
               </div>
-              <div className="text-gray-300">{profileData?.bio}</div>
+              <div className="text-gray-300">{userData?.bio}</div>
             </div>
-            <div className="flex">
+            <div className="relative w-32 h-32 mx-auto md:mr-5 md:ml-auto cursor-pointer">
               <Image
-                className="rounded-xl shadow-slate-800 shadow-md cursor-pointer"
+                className="rounded-xl shadow-slate-800 shadow-md h-auto"
                 alt="Avatar"
-                src={prefixUser?.image ?? "/img/avatar.webp"}
-                width={200}
-                height={200}
+                src={userData?.avatar ?? "/img/avatar.webp"}
+                fill
               />
 
               <input
@@ -108,17 +119,17 @@ const Profile = ({}) => {
           <ul className="grid gap-4 p-4 text-white">
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
               <li className="font-bold">Email</li>
-              {profileData?.email}
+              {userData?.email}
             </div>
 
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Phone number</li>
-              {/* <div>{phone}</div> */}
+              <div>{profile?.phone}</div>
             </div>
 
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Nickname</li>
-              {/* <div>{nickname}</div> */}
+              <div>{profile?.nickname}</div>
             </div>
 
             <div className="hover:bg-opacity-60 duration-300 rounded-lg p-4">
@@ -134,7 +145,7 @@ const Profile = ({}) => {
           </ul>
         </div>
       )}
-    </div>
+    </PagesContainer>
   );
 };
 

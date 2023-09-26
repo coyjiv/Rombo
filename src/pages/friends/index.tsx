@@ -3,6 +3,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
+import { PagesContainer } from "@/components/layout/containers";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const Friends = ({ handleBackToChatList }:any) => {
   const friendsData = generateFakeFriendsData();
 
   return (
-    <div className="w-full p-4 mt-12 rounded-lg bg-medium-purple shadow-2xl">
+    <PagesContainer>
       <div className="flex justify-between p-4">
         <button
           onClick={handleBackToChatList}
@@ -53,7 +54,7 @@ const Friends = ({ handleBackToChatList }:any) => {
           ))}
         </ul>
       </div>
-    </div>
+    </PagesContainer>
   );
 };
 

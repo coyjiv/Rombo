@@ -20,17 +20,7 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
         if(!email) return res.status(400).json({error:"Email is missing"})
         const user = await User.findOne({email})
         if(!user) return res.status(400).json({error:"User not found"})
-        console.log("user", user);
-        
-        return res.status(200).json({data:{
-            email:user.email,
-            firstName: user.fullName.split(" ")[0],
-            lastName: user.fullName.split(" ")[1],
-            nickname: user.nickname,
-            bio: user.bio,
-            phone: user.phone,
-            avatar: user.avatar
-        }})
+        return res.status(200).json({data:user})
 
     } else {
         res.status(405).json({error:"Method not allowed"})
