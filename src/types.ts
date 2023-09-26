@@ -26,4 +26,5 @@ export interface UserProfile {
   bio: string;
   firstName: string;
   lastName: string;
+  fullName?: string;
 }

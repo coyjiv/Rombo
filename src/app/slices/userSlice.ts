@@ -47,6 +47,10 @@ const userSlice = createSlice({
     );
     builder.addCase(updateProfile.fulfilled, (state, action) => {
       state.profile = action.payload;
+      state.profile.bio = action.payload.bio;
+      state.user.bio = action.payload.bio;
+      state.profile.firstName = action.payload.fullName.split(" ")[0];
+      state.profile.lastName = action.payload.fullName.split(" ")[1];
       state.error = { error: "" };
     });
   }
