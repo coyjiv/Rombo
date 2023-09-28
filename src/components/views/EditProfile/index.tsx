@@ -11,21 +11,20 @@ import { UserProfile } from "@/types";
 import { useAppDispatch } from "@/app/hooks";
 import { updateProfile } from "@/app/actions/user";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
+import BackArrow from "@/buttons/BackArrow";
 
 const EditProfile = ({
   setIsEditing,
-  profileData
-}:
-any) => {
-
+  profileData,
+  notifyError,
+  notifySuccess,
+}: any) => {
   const dispatch = useAppDispatch();
-
 
   console.log("profileData", profileData);
 
   const firstName = profileData?.firstName;
   const lastName = profileData?.lastName;
-
 
   const [selectedImage, setSelectedImage] = useState(
     profileData?.avatar ?? "/img/avatar.webp"
@@ -45,23 +44,25 @@ any) => {
     phone: profileData?.phone ?? "",
     nickname: profileData?.nickname ?? "",
   };
-  
 
-  const saveProfile = async (values:UserProfile) => {
+  const saveProfile = async (values: UserProfile) => {
     try {
       const updatedProfileData = {
-        ...profileData, 
+        ...profileData,
         fullName: `${values.firstName} ${values.lastName}`,
         bio: values.bio || "",
         phone: values.phone || "",
-        nickname: values.nickname  || "",
+        nickname: values.nickname || "",
       };
 
-        dispatch(updateProfile({old: profileData, newUser: updatedProfileData}))
-
+      dispatch(
+        updateProfile({ old: profileData, newUser: updatedProfileData })
+      );
     } catch (error) {
       console.error("An error occurred while updating the profile:", error);
+      notifyError();
     }
+    notifySuccess();
     setIsEditing(false);
   };
 
@@ -97,41 +98,43 @@ any) => {
       </div>
       <Formik
         initialValues={profileValues}
-       onSubmit={(values)=>{saveProfile(values)}}
+        onSubmit={(values) => {
+          saveProfile(values);
+        }}
       >
         {({ errors, touched, values }) => (
-        <Form className="rounded-lg m-3">
-          {/* First name */}
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple rounded-t-lg duration-300  p-4">
-            <li className="list-none font-bold">First name</li>
-            <Field
-              placeholder={firstName}
-              value={values.firstName}
-              type="text"
-              id="firstName"
-              name="firstName"
-              className="py-2 bg-gray-600 w-full rounded-lg"
-            />
-          </div>
-          {/* <ErrorMessage name="name" component="div" /> */}
+          <Form className="rounded-lg m-3">
+            {/* First name */}
+            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple rounded-t-lg duration-300  p-4">
+              <li className="list-none font-bold">First name</li>
+              <Field
+                placeholder={firstName}
+                value={values.firstName}
+                type="text"
+                id="firstName"
+                name="firstName"
+                className="py-2 bg-gray-600 w-full rounded-lg"
+              />
+            </div>
+            {/* <ErrorMessage name="name" component="div" /> */}
 
-          {/* Last name (optional) */}
-          <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
-            <li className="list-none font-bold">Last name (optional)</li>
-            <Field
-              placeholder={lastName}
-              value={values.lastName}
-              type="text"
-              id="lastName"
-              name="lastName"
-              className="py-2 bg-gray-600 w-full rounded-lg "
-            />
-          </div>
-          {/* <ErrorMessage name="bio" component="div" /> */}
+            {/* Last name (optional) */}
+            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+              <li className="list-none font-bold">Last name (optional)</li>
+              <Field
+                placeholder={lastName}
+                value={values.lastName}
+                type="text"
+                id="lastName"
+                name="lastName"
+                className="py-2 bg-gray-600 w-full rounded-lg "
+              />
+            </div>
+            {/* <ErrorMessage name="bio" component="div" /> */}
 
-          {/* Bio */}
-          <div className=" cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
-            <li className="list-none font-bold">Bio</li>
+            {/* Bio */}
+            <div className=" cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+              <li className="list-none font-bold">Bio</li>
               <Field
                 placeholder={profileData?.bio ?? ""}
                 value={values.bio}
@@ -140,11 +143,10 @@ any) => {
                 name="bio"
                 className="py-2 bg-gray-600 w-full rounded-lg"
               />
+            </div>
 
-          </div>
-
-           {/* Email */}
-           {/* <div className="hidden cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+            {/* Email */}
+            {/* <div className="hidden cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
             <li className="list-none font-bold">Email</li>
             <Field
               placeholder={profileData?.email}
@@ -156,44 +158,44 @@ any) => {
             />
           </div> */}
 
-           {/* Phone number */}
-           <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
-            <li className="list-none font-bold">Phone number</li>
-            <Field
-              placeholder={profileData?.phone}
-              value={values.phone}
-              type="text"
-              id="phone"
-              name="phone"
-              className="py-2 bg-gray-600 w-full rounded-lg"
-            />
-          </div>
+            {/* Phone number */}
+            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4">
+              <li className="list-none font-bold">Phone number</li>
+              <Field
+                placeholder={profileData?.phone}
+                value={values.phone}
+                type="text"
+                id="phone"
+                name="phone"
+                className="py-2 bg-gray-600 w-full rounded-lg"
+              />
+            </div>
 
-           {/* Nickname */}
-           <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4 rounded-b-lg">
-            <li className="list-none font-bold">Nickname</li>
-            <Field
-              placeholder={profileData?.nickname}
-              value={values.nickname}
-              type="text"
-              id="nickname"
-              name="nickname"
-              className="py-2 bg-gray-600 w-full rounded-lg"
-            />
-          </div>
-          
-          <div className="flex justify-between p-4">
-        <button className="btn btn-primary" type="submit">
-          Save Profile
-        </button>
-        <button className="btn btn-danger" onClick={handleCancelEdit}>
-          Cancel
-        </button>
-      </div>
-        </Form>
+            {/* Nickname */}
+            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 p-4 rounded-b-lg">
+              <li className="list-none font-bold">Nickname</li>
+              <Field
+                placeholder={profileData?.nickname}
+                value={values.nickname}
+                type="text"
+                id="nickname"
+                name="nickname"
+                className="py-2 bg-gray-600 w-full rounded-lg"
+              />
+            </div>
+
+            <div className="flex justify-between p-4">
+              <button className="btn btn-primary" type="submit">
+                Save Profile
+              </button>
+              <button className="btn btn-danger" onClick={handleCancelEdit}>
+                Cancel
+              </button>
+            </div>
+          </Form>
         )}
       </Formik>
-      
+
       {isGalleryOpen && (
         <Gallery
           // images={galleryImages}
@@ -206,7 +208,3 @@ any) => {
 };
 
 export default EditProfile;
-
-
-
-

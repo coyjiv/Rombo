@@ -3,7 +3,6 @@ import EditProfile from "../../components/views/EditProfile";
 import Image from "next/image";
 import { RxAvatar } from "react-icons/rx";
 import { FaEdit } from "react-icons/fa";
-import { BiArrowBack } from "react-icons/bi";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -11,14 +10,17 @@ import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
 import { useAppSelector } from "@/app/hooks";
 import { PagesContainer } from "@/components/layout/containers";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BackArrow from "@/buttons/BackArrow";
 
-const Profile = ({}) => {
+const Profile = () => {
   const session = useSession();
 
   const prefixUser = session?.data?.user;
 
-  const isLoading = useAppSelector(({user:{isLoading}}) => isLoading)
-  
+  const isLoading = useAppSelector(({ user: { isLoading } }) => isLoading);
+
   const userData = useGetUserDetails();
   const profile = useGetUserProfile();
 
@@ -40,6 +42,9 @@ const Profile = ({}) => {
   const handleEditProfileClick = () => {
     setIsEditing(true);
   };
+  const notifySuccess = () => toast.success("Your profile was updated");
+  const notifyError = () =>
+    toast.error("An error occurred while updating the profile");
 
   // const handleImageClick = () => {
   //   openGallery([
@@ -50,26 +55,21 @@ const Profile = ({}) => {
   //   ]);
   // };
 
-  const router = useRouter();
+  
 
-  if(isLoading){
-    // return tailwind spinner
-
-    return <div className="flex justify-center items-center mt-52">
-      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
-    </div>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center mt-52">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
   }
 
   return (
     <PagesContainer>
       {!isEditing ? (
         <div className="flex justify-between p-4">
-          <button
-            onClick={() => router.back()}
-            className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
-          >
-            <BiArrowBack />
-          </button>
+         <BackArrow />
           <button
             className="text-white p-[10px] text-xl rounded-full transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300"
             onClick={handleEditProfileClick}
@@ -83,16 +83,18 @@ const Profile = ({}) => {
         <EditProfile
           setIsEditing={setIsEditing}
           profileData={profile}
+          notifySuccess={notifySuccess}
+          notifyError={notifyError}
         />
       ) : (
         <div>
           <div className="flex flex-col-reverse md:flex-row justify-between mb-4">
             <div
-              className="mb-4 p-4 duration-300 border-dark-purple cursor-pointer"
+              className="mb-4 p-4 duration-300 border-dark-purple "
               // onClick={handleImageClick}
             >
               <div className="text-gray-300 font-bold text-2xl mb-1">
-                {userData?.fullName} 
+                {userData?.fullName}
               </div>
               <div className="text-gray-300">{userData?.bio}</div>
             </div>
@@ -117,17 +119,17 @@ const Profile = ({}) => {
             </div>
           </div>
           <ul className="grid gap-4 p-4 text-white">
-            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
+            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
               <li className="font-bold">Email</li>
               {userData?.email}
             </div>
 
-            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
+            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Phone number</li>
               <div>{profile?.phone}</div>
             </div>
 
-            <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
+            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Nickname</li>
               <div>{profile?.nickname}</div>
             </div>
@@ -143,6 +145,7 @@ const Profile = ({}) => {
               </li>
             </div>
           </ul>
+          <ToastContainer />
         </div>
       )}
     </PagesContainer>

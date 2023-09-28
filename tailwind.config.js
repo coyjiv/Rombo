@@ -13,6 +13,13 @@ module.exports = {
       custom: ['Josefin Sans', 'Open Sans', 'sans'], 
     },
     extend: {
+      backgroundSize: {
+        'size-200': '200% auto', 
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-100': '100% 0%', 
+      },
       boxShadow: {
         'custom': 'inset 0 0 0 30px #ADD8E6',
       },
@@ -26,6 +33,7 @@ module.exports = {
         'medium-purple': '#624fa1',
         'dark-purple': '#322852',
       }
+      
     },
   },
   plugins: [require("daisyui"), require('@tailwindcss/forms')],

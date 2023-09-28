@@ -4,6 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import { faker } from "@faker-js/faker"; 
 import Image from "next/image";
 import { PagesContainer } from "@/components/layout/containers";
+import BackArrow from "@/buttons/BackArrow";
 
 type Props = {};
 
@@ -33,11 +34,7 @@ const Music = () => {
   return (
     <PagesContainer>
       <div className="flex justify-between p-4">
-        <button
-          className="text-white p-[6px] w-15 h-15 text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
-        >
-          <BiArrowBack />
-        </button>
+       <BackArrow/>
         <button className="text-white p-[6px] w-15 h-15 text-2xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 ">
           <FaEdit />
         </button>
