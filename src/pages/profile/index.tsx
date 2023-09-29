@@ -24,6 +24,10 @@ const Profile = () => {
   const userData = useGetUserDetails();
   const profile = useGetUserProfile();
 
+  console.log("Displayed fullName:", userData?.fullName);
+  console.log("Displayed fullName in profile:", profile?.fullName );
+  console.log("Displayed firstName and lastName in profile:", profile?.firstName, profile?.lastName);
+
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
@@ -94,7 +98,7 @@ const Profile = () => {
               // onClick={handleImageClick}
             >
               <div className="text-gray-300 font-bold text-2xl mb-1">
-                {userData?.fullName}
+                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"} 
               </div>
               <div className="text-gray-300">{userData?.bio}</div>
             </div>
