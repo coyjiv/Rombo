@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { UserEmptyAvatarIcon } from "./icons/UserEmptyAvatarIcon";
+import { BiArrowBack } from "react-icons/bi";
+import { useRouter } from "next/router";
 
 export const SignInButton = () => {
     const { data: session, status } = useSession();
@@ -51,3 +53,19 @@ export const FormSubmitButton = ({ children, ...props }: DetailedHTMLProps<Butto
         </button>
     )
 }
+
+const BackArrow = () => {
+  const router = useRouter();
+  return (
+    <div>
+      <button
+        onClick={() => router.back()}
+        className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
+      >
+        <BiArrowBack />
+      </button>
+    </div>
+  );
+};
+
+export default BackArrow;

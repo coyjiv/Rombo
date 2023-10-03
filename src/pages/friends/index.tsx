@@ -4,7 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import { PagesContainer } from "@/components/layout/containers";
-import BackArrow from "@/buttons/BackArrow";
+import BackArrow from "@/components/buttons";
 
 type Props = {};
 

@@ -12,7 +12,7 @@ import { useAppSelector } from "@/app/hooks";
 import { PagesContainer } from "@/components/layout/containers";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BackArrow from "@/buttons/BackArrow";
+import BackArrow from "@/components/buttons";
 
 const Profile = () => {
   const session = useSession();
@@ -120,6 +120,7 @@ const Profile = () => {
               <button>
                 <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
               </button>
+     
             </div>
           </div>
           <ul className="grid gap-4 p-4 text-white">
