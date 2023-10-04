@@ -14,10 +14,13 @@ module.exports = {
     },
     extend: {
       backgroundSize: {
+        'size-50': '50% auto', 
+        'size-100': '100% auto', 
         'size-200': '200% auto', 
       },
       backgroundPosition: {
         'pos-0': '0% 0%',
+        'pos-50': '50% 0%', 
         'pos-100': '100% 0%', 
       },
       boxShadow: {

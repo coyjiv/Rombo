@@ -3,6 +3,7 @@ import EditProfile from "../../components/views/EditProfile";
 import Image from "next/image";
 import { RxAvatar } from "react-icons/rx";
 import { FaEdit } from "react-icons/fa";
+import { AiOutlineEdit } from "react-icons/ai";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -10,9 +11,9 @@ import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
 import { useAppSelector } from "@/app/hooks";
 import { PagesContainer } from "@/components/layout/containers";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import BackArrow from "@/components/buttons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BackArrow } from "@/components/buttons";
 
 const Profile = () => {
   const session = useSession();
@@ -25,8 +26,12 @@ const Profile = () => {
   const profile = useGetUserProfile();
 
   console.log("Displayed fullName:", userData?.fullName);
-  console.log("Displayed fullName in profile:", profile?.fullName );
-  console.log("Displayed firstName and lastName in profile:", profile?.firstName, profile?.lastName);
+  console.log("Displayed fullName in profile:", profile?.fullName);
+  console.log(
+    "Displayed firstName and lastName in profile:",
+    profile?.firstName,
+    profile?.lastName
+  );
 
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
@@ -47,8 +52,39 @@ const Profile = () => {
     setIsEditing(true);
   };
   const notifySuccess = () => toast.success("Your profile was updated");
-  const notifyError = () =>
-    toast.error("An error occurred while updating the profile");
+  const notifyError = () => toast.error("An error occurred while updating the profile");
+
+  const copyUserNameToClipboard = () => {
+    const usernameToCopy = userData?.fullName;
+    if (usernameToCopy) {
+      navigator.clipboard.writeText(usernameToCopy);
+      toast("User name was copied to the clipboard");
+    }
+  };
+
+  const copyEmailToClipboard = () => {
+    const emailToCopy = userData?.email;
+    if (emailToCopy) {
+      navigator.clipboard.writeText(emailToCopy);
+      toast("Email was copied to the clipboard");
+    }
+  };
+
+  const copyPhoneToClipboard = () => {
+    const phoneToCopy = userData?.phone;
+    if (phoneToCopy) {
+      navigator.clipboard.writeText(phoneToCopy);
+      toast("Phone number was copied to the clipboard");
+    }
+  };
+
+  const copyNicknameToClipboard = () => {
+    const nicknameToCopy = userData?.nickname;
+    if (nicknameToCopy) {
+      navigator.clipboard.writeText(nicknameToCopy);
+      toast("Nickname was copied to the clipboard");
+    }
+  };
 
   // const handleImageClick = () => {
   //   openGallery([
@@ -58,8 +94,6 @@ const Profile = () => {
   //     },
   //   ]);
   // };
-
-  
 
   if (isLoading) {
     return (
@@ -73,12 +107,12 @@ const Profile = () => {
     <PagesContainer>
       {!isEditing ? (
         <div className="flex justify-between p-4">
-         <BackArrow />
+          <BackArrow />
           <button
-            className="text-white p-[10px] text-xl rounded-full transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300"
+            className="text-white p-[10px] text-xl rounded-full transition ease-in-out bg-dark-purple  hover:bg-super-purple  hover:-translate-y-1 hover:scale-110duration-300"
             onClick={handleEditProfileClick}
           >
-            <FaEdit />
+            <AiOutlineEdit />
           </button>
         </div>
       ) : null}
@@ -92,13 +126,13 @@ const Profile = () => {
         />
       ) : (
         <div>
-          <div className="flex flex-col-reverse md:flex-row justify-between mb-4">
+          <div className="flex flex-col-reverse md:flex-row justify-between my-4">
             <div
               className="mb-4 p-4 duration-300 border-dark-purple "
               // onClick={handleImageClick}
             >
-              <div className="text-gray-300 font-bold text-2xl mb-1">
-                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"} 
+              <div onClick={copyUserNameToClipboard} className="cursor-pointer text-gray-300 font-bold text-2xl mb-1">
+                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"}
               </div>
               <div className="text-gray-300">{userData?.bio}</div>
             </div>
@@ -117,33 +151,32 @@ const Profile = () => {
                 style={{ display: "none" }}
                 ref={imageInputRef}
               />
-              <button>
-                <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
-              </button>
-     
             </div>
           </div>
           <ul className="grid gap-4 p-4 text-white">
-            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
+            <div
+              onClick={copyEmailToClipboard}
+              className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4"
+            >
               <li className="font-bold">Email</li>
               {userData?.email}
             </div>
 
-            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
+            <div onClick={copyPhoneToClipboard} className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Phone number</li>
               <div>{profile?.phone}</div>
             </div>
 
-            <div className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
+            <div onClick={copyNicknameToClipboard} className="hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4 ">
               <li className="font-bold">Nickname</li>
               <div>{profile?.nickname}</div>
             </div>
 
-            <div className="hover:bg-opacity-60 duration-300 rounded-lg p-4">
+            <div className="cursor-pointer hover:bg-opacity-60 duration-300 rounded-lg p-4">
               <li className="font-bold flex justify-center">
                 <button
                   onClick={handleEditProfileClick}
-                  className="btn btn-primary w-1/3"
+                  className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-1/3 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
                 >
                   Edit profile
                 </button>

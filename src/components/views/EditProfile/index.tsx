@@ -11,7 +11,8 @@ import { UserProfile } from "@/types";
 import { useAppDispatch } from "@/app/hooks";
 import { updateProfile } from "@/app/actions/user";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
-import BackArrow from "@/buttons/BackArrow";
+import { PagesContainer } from "@/components/layout/containers";
+  
 
 const EditProfile = ({
   setIsEditing,
@@ -66,11 +67,12 @@ const EditProfile = ({
     setIsEditing(false);
   };
 
-  return (
-    <div className="w-full rounded-lg bg-medium-purple shadow-2xl p-4 text-white">
+  return ( 
+  <PagesContainer className="text-white h-screen">
+    
       <button
         onClick={handleCancelEdit}
-        className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
+        className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-dark-purple  hover:bg-super-purple  hover:-translate-y-1 hover:scale-110 duration-300 "
       >
         <BiArrowBack />
       </button>
@@ -203,7 +205,8 @@ const EditProfile = ({
           onClose={() => setIsGalleryOpen(false)}
         />
       )}
-    </div>
+ 
+    </PagesContainer>
   );
 };
 

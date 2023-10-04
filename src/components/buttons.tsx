@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { UserEmptyAvatarIcon } from "./icons/UserEmptyAvatarIcon";
 import { BiArrowBack } from "react-icons/bi";
+import { FaSearch } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 export const SignInButton = () => {
@@ -53,14 +54,13 @@ export const FormSubmitButton = ({ children, ...props }: DetailedHTMLProps<Butto
         </button>
     )
 }
-
-const BackArrow = () => {
+export const BackArrow = () => {
   const router = useRouter();
   return (
     <div>
       <button
         onClick={() => router.back()}
-        className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 "
+        className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-dark-purple  hover:bg-super-purple hover:-translate-y-1 hover:scale-110 duration-300 "
       >
         <BiArrowBack />
       </button>
@@ -68,4 +68,37 @@ const BackArrow = () => {
   );
 };
 
-export default BackArrow;
+
+
+export const SearchButton = ({ loading }:any) => {
+    return (
+        <button
+        type="submit"
+        disabled={loading}
+        className={`bg-gradient-to-r transition-all w-1/6 sm:w-1/5 md:w-1/4 lg:w-1/3 md:rounded-lg flex justify-center rounded-full from-purple-500 via-indigo-500 to-super-purple lg:rounded-lg shadow-md hover:from-purple-500 hover:via-indigo-500 hover:to-super-purple ease-in-out hover:duration-300 bg-pos-0 hover:bg-pos-100 bg-size-200 text-white py-3 px-6 ${
+          loading ? "w-1/6" : "w-1/3" // Фиксированная ширина в зависимости от состояния loading
+        }`}
+      >
+        {loading ? (
+          <>
+            <span className="md:hidden lg:hidden sm:inline">
+              {" "}
+              <FaSearch />
+            </span>
+            <span className="hidden sm:hidden md:inline lg:inline">
+              Searching...
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="md:hidden lg:hidden sm:inline">
+              <FaSearch />
+            </span>
+            <span className="hidden sm:hidden md:inline lg:inline">
+              Search
+            </span>
+          </>
+        )}
+      </button>
+    )
+}

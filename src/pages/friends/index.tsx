@@ -4,7 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import { PagesContainer } from "@/components/layout/containers";
-import BackArrow from "@/components/buttons";
+import { BackArrow } from "@/components/buttons";
 
 type Props = {};
 
@@ -24,9 +24,6 @@ const Friends = ({}: any) => {
     <PagesContainer>
       <div className="flex justify-between p-4">
         <BackArrow />
-        <button className="text-white p-[6px] w-15 h-15 text-2xl rounded-full duration-300transition ease-in-out bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-600 duration-300 ">
-          <FaEdit />
-        </button>
       </div>
 
       <div className="text-white">

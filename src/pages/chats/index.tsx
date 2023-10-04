@@ -1,5 +1,4 @@
-import BackArrow from '@/components/buttons'
-import CloudinaryTest from '@/components/CloudinaryTest'
+import { BackArrow } from "@/components/buttons";
 import { PagesContainer } from '@/components/layout/containers'
 import React from 'react'
 
@@ -8,15 +7,9 @@ import React from 'react'
   
   return (
     <PagesContainer>
-      <BackArrow/>
-      {/* <h1>Моя картинка с Cloudinary</h1>
-      <CldImage
-        cloudName="your_cloud_name"
-        publicId="your_public_id"
-        width="300"
-        crop="fill"
-        alt="Описание картинки"
-      /> */}
+       <div className="flex justify-between p-4">
+        <BackArrow />
+      </div>  
     </PagesContainer>
   )
 }
