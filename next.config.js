@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
     images: {
-      domains: [ 'loremflickr.com', 'cloudflare-ipfs.com','lh3.googleusercontent.com'],
+      domains: [ 'loremflickr.com', 'cloudflare-ipfs.com','lh3.googleusercontent.com', 'res.cloudinary.com'],
     },
     // disable eslint
     eslint: {

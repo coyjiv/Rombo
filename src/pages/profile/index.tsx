@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useRef, useState } from "react";
 import EditProfile from "../../components/views/EditProfile";
 import Image from "next/image";
@@ -9,33 +11,37 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useGetUserDetails } from "@/helpers/useGetUserDetails";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { PagesContainer } from "@/components/layout/containers";
+import { CldUploadWidget } from 'next-cloudinary';
+import { updateAvatar } from "@/app/slices/userSlice";
 
-const Profile = ({}) => {
+
+const Profile = ({ }) => {
   const session = useSession();
 
   const prefixUser = session?.data?.user;
 
-  const isLoading = useAppSelector(({user:{isLoading}}) => isLoading)
-  
+  const isLoading = useAppSelector(({ user: { isLoading } }) => isLoading)
+  const dispatch = useAppDispatch();
+
   const userData = useGetUserDetails();
   const profile = useGetUserProfile();
 
   console.log("Displayed fullName:", userData?.fullName);
-  console.log("Displayed fullName in profile:", profile?.fullName );
+  console.log("Displayed fullName in profile:", profile?.fullName);
   console.log("Displayed firstName and lastName in profile:", profile?.firstName, profile?.lastName);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(
+  const [ isEditing, setIsEditing ] = useState(false);
+  const [ error, setError ] = useState(null);
+  const [ selectedImage, setSelectedImage ] = useState(
     prefixUser?.image ?? "/img/avatar.webp"
   );
-  const [isRxCrossVisible, setIsRxCrossVisible] = useState(false);
+  const [ isRxCrossVisible, setIsRxCrossVisible ] = useState(false);
   const imageInputRef = useRef(null);
 
   const handleImageSelect = (e: any) => {
-    const file = e?.target?.files[0];
+    const file = e?.target?.files[ 0 ];
     if (file && file.type.startsWith("image/")) {
       setSelectedImage(URL.createObjectURL(file));
     }
@@ -56,7 +62,7 @@ const Profile = ({}) => {
 
   const router = useRouter();
 
-  if(isLoading){
+  if (isLoading) {
     // return tailwind spinner
 
     return <div className="flex justify-center items-center mt-52">
@@ -93,32 +99,57 @@ const Profile = ({}) => {
           <div className="flex flex-col-reverse md:flex-row justify-between mb-4">
             <div
               className="mb-4 p-4 duration-300 border-dark-purple cursor-pointer"
-              // onClick={handleImageClick}
+            // onClick={handleImageClick}
             >
               <div className="text-gray-300 font-bold text-2xl mb-1">
-                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"} 
+                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"}
               </div>
               <div className="text-gray-300">{userData?.bio}</div>
             </div>
-            <div className="relative w-32 h-32 mx-auto md:mr-5 md:ml-auto cursor-pointer">
-              <Image
-                className="rounded-xl shadow-slate-800 shadow-md h-auto"
-                alt="Avatar"
-                src={userData?.avatar ?? "/img/avatar.webp"}
-                fill
-              />
+            <CldUploadWidget uploadPreset="hheznuwk" onUpload={(res) => {
+              // @ts-ignore 
+              if (res.event === 'success' && res?.info?.url)
+                // @ts-ignore 
+                dispatch(updateAvatar(res.info?.url))
+              fetch('/api/profile/changeAvatar', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                // @ts-ignore 
+                body: JSON.stringify({ avatar: res.info?.url })
+              })
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageSelect}
-                style={{ display: "none" }}
-                ref={imageInputRef}
-              />
-              <button>
-                <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
-              </button>
-            </div>
+            }}>
+              {({ open }) => {
+                function handleOnClick(e: any) {
+                  e.preventDefault();
+                  open();
+                }
+                return (
+                  <div className="relative w-32 h-32 mx-auto md:mr-5 md:ml-auto cursor-pointer" onClick={handleOnClick}>
+                    <Image
+                      className="rounded-xl shadow-slate-800 shadow-md h-auto"
+                      alt="Avatar"
+                      src={userData?.avatar ?? "/img/avatar.webp"}
+                      fill
+                    />
+
+                    {/* <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleOnClick}
+                      style={{ display: "none" }}
+                      ref={imageInputRef}
+                    /> */}
+                    <button onClick={handleOnClick}>
+                      <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
+                    </button>
+                  </div>
+                );
+              }}
+            </CldUploadWidget>
+
           </div>
           <ul className="grid gap-4 p-4 text-white">
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple duration-300 rounded-lg p-4">
