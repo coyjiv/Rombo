@@ -22,6 +22,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    updateAvatar: (state, action) => {
+      state.user.avatar = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
@@ -55,5 +58,7 @@ const userSlice = createSlice({
     });
   }
 });
+
+export const { updateAvatar } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
