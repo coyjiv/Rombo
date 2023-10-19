@@ -8,7 +8,7 @@ import { BackArrow } from "@/components/buttons";
 
 type Props = {};
 
-const Friends = ({}: any) => {
+const Friends = () => {
   const generateFakeFriendsData = () => {
     const friends = Array.from({ length: 10 }, () => ({
       name: faker.person.fullName(),

@@ -12,7 +12,9 @@ import { useAppDispatch } from "@/app/hooks";
 import { updateProfile } from "@/app/actions/user";
 import { useGetUserProfile } from "@/helpers/useGetUserProfile";
 import { PagesContainer } from "@/components/layout/containers";
-  
+import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditProfile = ({
   setIsEditing,
@@ -46,6 +48,27 @@ const EditProfile = ({
     nickname: profileData?.nickname ?? "",
   };
 
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      // .required("First name is required")
+      .matches(
+        /^[a-zA-Zа-яА-ЯіІїЇєЄёЁ]+$/,
+        "First name should contain only letters"
+      ),
+
+    lastName: Yup.string().matches(
+      /^[a-zA-Zа-яА-ЯіІїЇєЄёЁ]+$/,
+      "Last name should contain only letters"
+    ),
+    phone: Yup.string()
+      .matches(/^\+?\d+$/, "Invalid phone number format"),
+      // .required("Phone number is required")
+    nickname: Yup.string().min(
+      3,
+      "Nickname should be at least 3 characters long"
+    ),
+  });
+
   const saveProfile = async (values: UserProfile) => {
     try {
       const updatedProfileData = {
@@ -59,17 +82,16 @@ const EditProfile = ({
       dispatch(
         updateProfile({ old: profileData, newUser: updatedProfileData })
       );
+      notifySuccess();
+      setIsEditing(false);
     } catch (error) {
       console.error("An error occurred while updating the profile:", error);
       notifyError();
     }
-    notifySuccess();
-    setIsEditing(false);
   };
 
-  return ( 
-  <PagesContainer className="text-white h-screen">
-    
+  return (
+    <PagesContainer className="text-white h-screen">
       <button
         onClick={handleCancelEdit}
         className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-dark-purple  hover:bg-super-purple  hover:-translate-y-1 hover:scale-110 duration-300 "
@@ -80,11 +102,11 @@ const EditProfile = ({
         {selectedImage && (
           <Image
             // onClick={handleImageClick}
-            className="rounded-xl w-1/4 shadow-slate-800 shadow-md cursor-pointer ml-4"
+            className="rounded-xl w-1/6 shadow-slate-800 shadow-md cursor-pointer ml-4"
             alt="Avatar"
             src={profileData?.avatar ?? "/img/avatar.webp"}
-            width={200}
-            height={200}
+            width={250}
+            height={250}
           />
         )}
         <input
@@ -100,6 +122,7 @@ const EditProfile = ({
       </div>
       <Formik
         initialValues={profileValues}
+        validationSchema={validationSchema}
         onSubmit={(values) => {
           saveProfile(values);
         }}
@@ -115,7 +138,9 @@ const EditProfile = ({
                 type="text"
                 id="firstName"
                 name="firstName"
-                className="py-2 bg-gray-600 w-full rounded-lg"
+                className={`py-2 bg-gray-600 w-full rounded-lg ${
+                  errors.firstName && touched.firstName ? "border-red-500" : ""
+                }`}
               />
             </div>
             {/* <ErrorMessage name="name" component="div" /> */}
@@ -129,7 +154,9 @@ const EditProfile = ({
                 type="text"
                 id="lastName"
                 name="lastName"
-                className="py-2 bg-gray-600 w-full rounded-lg "
+                className={`py-2 bg-gray-600 w-full rounded-lg ${
+                  errors.lastName && touched.lastName ? "border-red-500" : ""
+                }`}
               />
             </div>
             {/* <ErrorMessage name="bio" component="div" /> */}
@@ -169,7 +196,9 @@ const EditProfile = ({
                 type="text"
                 id="phone"
                 name="phone"
-                className="py-2 bg-gray-600 w-full rounded-lg"
+                className={`py-2 bg-gray-600 w-full rounded-lg ${
+                  errors.phone && touched.phone ? "border-red-500" : ""
+                }`}
               />
             </div>
 
@@ -187,10 +216,10 @@ const EditProfile = ({
             </div>
 
             <div className="flex justify-between p-4">
-              <button className="btn btn-primary" type="submit">
+              <button className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white" type="submit">
                 Save Profile
               </button>
-              <button className="btn btn-danger" onClick={handleCancelEdit}>
+              <button className="btn btn-danger border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white" onClick={handleCancelEdit}>
                 Cancel
               </button>
             </div>
@@ -205,7 +234,6 @@ const EditProfile = ({
           onClose={() => setIsGalleryOpen(false)}
         />
       )}
- 
     </PagesContainer>
   );
 };
