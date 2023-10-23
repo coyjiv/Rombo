@@ -43,12 +43,12 @@ const Profile = () => {
   const [ isRxCrossVisible, setIsRxCrossVisible ] = useState(false);
   const imageInputRef = useRef(null);
 
-  const handleImageSelect = (e: any) => {
-    const file = e?.target?.files[ 0 ];
-    if (file && file.type.startsWith("image/")) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-  };
+  // const handleImageSelect = (e: any) => {
+  //   const file = e?.target?.files[ 0 ];
+  //   if (file && file.type.startsWith("image/")) {
+  //     setSelectedImage(URL.createObjectURL(file));
+  //   }
+  // };
 
   const handleEditProfileClick = () => {
     setIsEditing(true);

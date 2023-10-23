@@ -15,6 +15,8 @@ import { PagesContainer } from "@/components/layout/containers";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CldUploadWidget } from "next-cloudinary";
+import { updateAvatar } from "@/app/slices/userSlice";
 
 const EditProfile = ({
   setIsEditing,
@@ -60,9 +62,8 @@ const EditProfile = ({
       /^[a-zA-Zа-яА-ЯіІїЇєЄёЁ]+$/,
       "Last name should contain only letters"
     ),
-    phone: Yup.string()
-      .matches(/^\+?\d+$/, "Invalid phone number format"),
-      // .required("Phone number is required")
+    phone: Yup.string().matches(/^\+?\d+$/, "Invalid phone number format"),
+    // .required("Phone number is required")
     nickname: Yup.string().min(
       3,
       "Nickname should be at least 3 characters long"
@@ -98,28 +99,46 @@ const EditProfile = ({
       >
         <BiArrowBack />
       </button>
-      <div className="flex my-10">
-        {selectedImage && (
-          <Image
-            // onClick={handleImageClick}
-            className="rounded-xl w-1/6 shadow-slate-800 shadow-md cursor-pointer ml-4"
-            alt="Avatar"
-            src={profileData?.avatar ?? "/img/avatar.webp"}
-            width={250}
-            height={250}
-          />
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          // onChange={handleImageSelect}
-          className="hidden"
-          ref={imageInputRef}
-        />
-        <button>
-          <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
-        </button>
-      </div>
+
+      <CldUploadWidget
+        uploadPreset="hheznuwk"
+        onUpload={(res) => {
+          // @ts-ignore
+          if (res.event === "success" && res?.info?.url)
+            // @ts-ignore
+            dispatch(updateAvatar(res.info?.url));
+          fetch("/api/profile/changeAvatar", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // @ts-ignore
+            body: JSON.stringify({ avatar: res.info?.url }),
+          });
+        }}
+      >
+        {({ open }) => {
+          function handleOnClick(e: any) {
+            e.preventDefault();
+            open();
+          }
+          return (
+            <div onClick={handleOnClick} className="flex my-10">
+              <Image
+                className="rounded-xl w-1/6 shadow-slate-800 shadow-md cursor-pointer ml-4"
+                alt="Avatar"
+                src={profileData?.avatar ?? "/img/avatar.webp"}
+                width={250}
+                height={250}
+              />
+
+              <button>
+                <RxAvatar className="text-blue-800 bg-blue-400 text-5xl relative right-6 top-3 hover:shadow-custom rounded-full duration-500" />
+              </button>
+            </div>
+          );
+        }}
+      </CldUploadWidget>
       <Formik
         initialValues={profileValues}
         validationSchema={validationSchema}
@@ -216,10 +235,16 @@ const EditProfile = ({
             </div>
 
             <div className="flex justify-between p-4">
-              <button className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white" type="submit">
+              <button
+                className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
+                type="submit"
+              >
                 Save Profile
               </button>
-              <button className="btn btn-danger border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white" onClick={handleCancelEdit}>
+              <button
+                className="btn btn-danger border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
+                onClick={handleCancelEdit}
+              >
                 Cancel
               </button>
             </div>
