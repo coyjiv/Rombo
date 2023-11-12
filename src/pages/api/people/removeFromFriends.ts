@@ -26,12 +26,11 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
         const potentialFriend = await User.findOne({email:potentialFriendEmail})
         if(!potentialFriend) return res.status(400).json({error:"Potential friend not found"})
 
-        if(user?.friends.includes(potentialFriend.email)) return res.status(400).json({error:"You are already friends with this user"})
-        if(potentialFriend.potentialFriends.includes(user?.email as string)) return res.status(400).json({error:"You have already sent a friend request to this user"})
+        if(!user?.friends.includes(potentialFriend.email)) return res.status(400).json({error:"You are not friends with this user"})
 
+        user.friends = user.friends.filter(friend => friend !== potentialFriend.email)
+        potentialFriend.friends = potentialFriend.friends.filter(friend => friend !== user.email)
 
-        user.potentialFriends.push(potentialFriend.email)
-        potentialFriend.potentialFriends.push(user?.email as string)
         await potentialFriend.save()
         await user.save()
 
