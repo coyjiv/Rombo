@@ -30,8 +30,10 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
         if(potentialFriend.potentialFriends.includes(user?.email as string)) return res.status(400).json({error:"You have already sent a friend request to this user"})
 
 
-        user.potentialFriends.push(potentialFriend.email)
-        potentialFriend.potentialFriends.push(user?.email as string)
+        user.potentialFriends = user.potentialFriends.filter((email) => email !== potentialFriend.email)
+        user.potentialFriends = potentialFriend.potentialFriends.filter((email) => email !== user?.email)
+        user.friends.push(potentialFriend.email)
+        potentialFriend.friends.push(user?.email as string)
         await potentialFriend.save()
         await user.save()
 
