@@ -11,6 +11,7 @@ export interface User {
   date?: Date;
   friends: string[];
   senderId: string;
+  potentialFriends: string[];
 }
 export interface ApiError {
   error: String;
