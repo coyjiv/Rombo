@@ -8,7 +8,7 @@ import { BackArrow, SearchButton } from "@/components/buttons";
 import Image from "next/image";
 import { RxAvatar, RxButton } from "react-icons/rx";
 
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 import SkeletonItem from "@/components/SkeletonItem";
 import { User } from "@/types";
 import { SearchResults } from "@/components/views/People/SearchResults";
@@ -33,7 +33,7 @@ const PeoplePage = () => {
     try {
       const users = await findUser(searchString);
       setSearchResults(users);
-      setShowNoUsersFound(users.length === 0);
+      setShowNoUsersFound(users?.length === 0);
     } catch (error) {
       console.error(error);
     } finally {

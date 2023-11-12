@@ -25,7 +25,19 @@ export const SearchUserCard = ({ user }: { user: User }) => (
         </p>
       </div>
       <div className="flex items-center">
-        <button className="btn bg-medium-purple border-super-dark-purple border-2 text-white py-2 lg:py-2 px-4 lg:px-6 mr-4 ">
+        <button onClick={async()=>{
+          const res = await fetch("/api/people/sendFriendRequest", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+            }),
+          });
+          const data = await res.json();
+          console.log(data);
+        }} className="btn bg-medium-purple border-super-dark-purple border-2 text-white py-2 lg:py-2 px-4 lg:px-6 mr-4 ">
           Add
         </button>
       </div>

@@ -8,6 +8,7 @@ export interface IUser extends Document {
   nickname: string;
   phone: string;
   friends: string[];
+  potentialFriends: string[];
   chatRooms: string[];
   password: string;
   googleId?: string;
@@ -48,6 +49,10 @@ const userSchema = new Schema<IUser>(
     select: true,
   },
   friends: {
+    type: [String],
+    default: [],
+  },
+  potentialFriends: {
     type: [String],
     default: [],
   },
