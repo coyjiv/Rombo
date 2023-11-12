@@ -33,6 +33,7 @@ const PeoplePage = () => {
       const users = await findUser(searchString);
       setSearchResults(users);
       setShowNoUsersFound(users?.length === 0);
+      setShowNoUsersFound(users?.length === 0);
     } catch (error) {
       console.error(error);
     } finally {

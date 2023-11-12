@@ -1,8 +1,8 @@
 import { User } from "@/types";
 import { SearchUserCard } from "./SearchUserCard";
 
-export const SearchResults = ({ searchResults }: { searchResults: User[] }) =>
-  searchResults.length > 0 ? (
+export const SearchResults = ({ searchResults }: { searchResults: any[] }) =>
+  searchResults?.length > 0 ? (
     <div>
       <ul className="space-y-4">
         {searchResults.map((user) => (
