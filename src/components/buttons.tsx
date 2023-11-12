@@ -76,7 +76,7 @@ export const SearchButton = ({ loading }:any) => {
         type="submit"
         disabled={loading}
         className={`bg-gradient-to-r transition-all w-1/6 sm:w-1/5 md:w-1/4 lg:w-1/3 md:rounded-lg flex justify-center rounded-full from-purple-500 via-indigo-500 to-super-purple lg:rounded-lg shadow-md hover:from-purple-500 hover:via-indigo-500 hover:to-super-purple ease-in-out hover:duration-300 bg-pos-0 hover:bg-pos-100 bg-size-200 text-white py-3 px-6 ${
-          loading ? "w-1/6" : "w-1/3" // Фиксированная ширина в зависимости от состояния loading
+          loading ? "w-1/6" : "w-1/3" 
         }`}
       >
         {loading ? (

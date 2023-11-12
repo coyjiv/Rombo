@@ -8,7 +8,6 @@ import { BackArrow, SearchButton } from "@/components/buttons";
 import Image from "next/image";
 import { RxAvatar, RxButton } from "react-icons/rx";
 
-import debounce from "lodash/debounce";
 import SkeletonItem from "@/components/SkeletonItem";
 import { User } from "@/types";
 import { SearchResults } from "@/components/views/People/SearchResults";
@@ -33,7 +32,7 @@ const PeoplePage = () => {
     try {
       const users = await findUser(searchString);
       setSearchResults(users);
-      setShowNoUsersFound(users.length === 0);
+      setShowNoUsersFound(users?.length === 0);
     } catch (error) {
       console.error(error);
     } finally {
@@ -59,8 +58,8 @@ const PeoplePage = () => {
         onSubmit={onSubmit}
       >
         {(formikProps) => (
-          <Form className="flex justify-center items-center mt-4">
-            <div className="p-4 bg-dark-purple w-fit bg-opacity-70 rounded-lg flex items-center">
+          <Form className="flex justify-center items-center mt-4 p-4">
+            <div className="p-4 w-full bg-dark-purple bg-opacity-70 rounded-lg flex items-center">
               <Field
                 value={searchString}
                 onChange={(e: any) =>

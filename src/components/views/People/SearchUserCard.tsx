@@ -25,9 +25,12 @@ export const SearchUserCard = ({ user }: { user: User }) => (
         </p>
       </div>
       <div className="flex items-center">
-        <button className="btn bg-medium-purple border-super-dark-purple border-2 text-white py-2 lg:py-2 px-4 lg:px-6 mr-4 ">
-          Add
-        </button>
+      <button
+        type="button"
+        className="rounded-full bg-super-dark-purple duration-300 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+       Add
+      </button>
       </div>
     </div>
   </li>

@@ -22,7 +22,7 @@ const Friends = () => {
 
   return (
     <PagesContainer>
-      <div className="flex justify-between p-4">
+      <div className="flex justify-between p-4 ">
         <BackArrow />
       </div>
 
