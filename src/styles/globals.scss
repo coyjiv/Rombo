@@ -34,13 +34,13 @@ body {
 
 .gradient-purple{
   background: rgb(50,40,82);
-background: linear-gradient(90deg, rgba(50,40,82,1) 0%, rgba(72,31,96,1) 50%, rgba(98,79,161,1) 100%);
+  background: linear-gradient(90deg, rgba(50,40,82,1) 0%, rgba(72,31,96,1) 50%, rgba(98,79,161,1) 100%);
 }
 
 .gradient-after-reg{
   background: #8E2DE2;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #4A00E0, #8E2DE2);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #4A00E0, #8E2DE2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(to right, #4A00E0, #8E2DE2);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4A00E0, #8E2DE2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
 

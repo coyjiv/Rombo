@@ -1,4 +1,5 @@
 export interface User {
+  id?: string;
   avatar: string | null;
   chatRooms: string[];
   googleId?: string;

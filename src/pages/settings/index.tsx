@@ -1,8 +1,6 @@
-import DarkModeButton from "@/buttons/DarkModeButton";
 import { PagesContainer } from "@/components/layout/containers";
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { FaEdit } from "react-icons/fa";
 
 const Settings = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -58,7 +56,6 @@ const Settings = () => {
             <span className="ml-2 text-gray-400">Включить уведомления</span>
           </label>
         </div>
-        <DarkModeButton />
       </div>
     </PagesContainer>
   );

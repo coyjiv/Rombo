@@ -13,6 +13,16 @@ module.exports = {
       custom: ['Josefin Sans', 'Open Sans', 'sans'], 
     },
     extend: {
+      backgroundSize: {
+        'size-50': '50% auto', 
+        'size-100': '100% auto', 
+        'size-200': '200% auto', 
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-50': '50% 0%', 
+        'pos-100': '100% 0%', 
+      },
       boxShadow: {
         'custom': 'inset 0 0 0 30px #ADD8E6',
       },
@@ -25,7 +35,12 @@ module.exports = {
         'light-purple': '#96a4c1',
         'medium-purple': '#624fa1',
         'dark-purple': '#322852',
+        'super-purple': "#A475F0",
+        'super-dark-purple': "#443163",
+        'medium-light-purple': '#7956B0',
+        'bold-medium-purple' : '#5E438A'
       }
+      
     },
   },
   plugins: [require("daisyui"), require('@tailwindcss/forms')],
