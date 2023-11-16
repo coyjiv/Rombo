@@ -33,7 +33,6 @@ const PeoplePage = () => {
       const users = await findUser(searchString);
       setSearchResults(users);
       setShowNoUsersFound(users?.length === 0);
-      setShowNoUsersFound(users?.length === 0);
     } catch (error) {
       console.error(error);
     } finally {
@@ -50,9 +49,10 @@ const PeoplePage = () => {
 
   return (
     <PagesContainer>
-      <div className="flex justify-between p-4">
+      <div className="p-4">
         <BackArrow />
       </div>
+      <h1 className="p-4 text-3xl text-white font-bold mb-4">Users</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -60,7 +60,7 @@ const PeoplePage = () => {
       >
         {(formikProps) => (
           <Form className="flex justify-center items-center mt-4 p-4">
-            <div className="p-4 w-full bg-dark-purple bg-opacity-70 rounded-lg flex items-center">
+            <div className="p-2 w-full bg-dark-purple bg-opacity-70 rounded-lg flex items-center">
               <Field
                 value={searchString}
                 onChange={(e: any) =>
@@ -70,7 +70,7 @@ const PeoplePage = () => {
                 type="text"
                 name="searchString"
                 placeholder="Search for users..."
-                className="mr-2 p-2  w-5/6 sm:w-4/5 md:w-3/4 lg:w-2/3  rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+                className="mr-2 p-2  w-5/6   rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
               />
               <SearchButton loading={loading}/>
             </div>
@@ -79,16 +79,16 @@ const PeoplePage = () => {
       </Formik>
       <div className="my-12 mx-4">
         {loading ? (
-          <div>
-            <ul className="space-y-4">
+    
+            <ul className="divide-y divide-gray-100">
               <SkeletonItem />
               <SkeletonItem />
               <SkeletonItem />
               <SkeletonItem />
             </ul>
-          </div>
+          
         ) : (
-          <SearchResults searchResults={searchResults} />
+          <SearchResults searchString={searchString} searchResults={searchResults} />
         )}
       </div>
     </PagesContainer>

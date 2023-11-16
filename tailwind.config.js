@@ -33,6 +33,7 @@ module.exports = {
       colors: {
         'light-pink': '#f2f5eb',
         'light-purple': '#96a4c1',
+        'light-purple2': '#9154D2',
         'medium-purple': '#624fa1',
         'dark-purple': '#322852',
         'super-purple': "#A475F0",
