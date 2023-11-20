@@ -33,6 +33,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-src/components/views/Friends/SearchFriendCard.tsx
-src/components/views/Friends/SearchFriendResults.tsx
-src/pages/api/friends/friend.ts
