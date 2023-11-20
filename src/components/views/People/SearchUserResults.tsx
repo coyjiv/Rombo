@@ -2,11 +2,11 @@ import { useState } from "react";
 import { User } from "@/types";
 import { SearchUserCard } from "./SearchUserCard";
 
-export const SearchResults = ({ searchResults, searchString }: { searchResults: any[]; searchString: string }) => (
+export const SearchUserResults = ({ searchResults, searchString }: { searchResults: any[]; searchString: string }) => (
   <div>
     {searchString.length > 0 ? (
       searchResults?.length > 0 ? (
-        <ul className="space-y-2">
+        <ul className="divide-y divide-gray-100">
           {searchResults.map((user) => (
             <SearchUserCard key={user?.id} user={user} />
           ))}

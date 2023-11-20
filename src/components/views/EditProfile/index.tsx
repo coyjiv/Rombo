@@ -125,7 +125,7 @@ const EditProfile = ({
           return (
             <div onClick={handleOnClick} className="flex my-10">
               <Image
-                className="rounded-xl cursor-pointer ml-4 object-fill"
+                className="rounded-xl w-72 h-72 cursor-pointer ml-4"
                 alt="Avatar"
                 src={profileData?.avatar ?? "/img/avatar.webp"}
                 width={300}

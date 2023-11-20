@@ -22,7 +22,9 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
         const user = await User.findOne({email})
         const potentialFriendEmail = req.body.email
         if(!potentialFriendEmail || !user) return res.status(400).json({error:"Email for potentialFriend is missing or user not found"})
-
+        if (email === potentialFriendEmail) {
+            return res.status(400).json({ error: "You cannot send a friend request to yourself" });
+          }
         const potentialFriend = await User.findOne({email:potentialFriendEmail})
         if(!potentialFriend) return res.status(400).json({error:"Potential friend not found"})
 

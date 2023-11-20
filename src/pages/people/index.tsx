@@ -5,18 +5,17 @@ import { PagesContainer } from "@/components/layout/containers";
 import { findUser } from "@/app/actions/users";
 import { BackArrow, SearchButton } from "@/components/buttons";
 
-import Image from "next/image";
 import { RxAvatar, RxButton } from "react-icons/rx";
 
 import SkeletonItem from "@/components/SkeletonItem";
 import { User } from "@/types";
-import { SearchResults } from "@/components/views/People/SearchResults";
+import { SearchUserResults } from "@/components/views/People/SearchUserResults";
 
 const PeoplePage = () => {
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [showNoUsersFound, setShowNoUsersFound] = useState(false);
-  const [searchString, setSearchString] = useState(""); // Добавляем состояние для поисковой строки
+  const [searchString, setSearchString] = useState(""); 
 
   const initialValues = {
     searchString: "",
@@ -88,7 +87,7 @@ const PeoplePage = () => {
             </ul>
           
         ) : (
-          <SearchResults searchString={searchString} searchResults={searchResults} />
+          <SearchUserResults searchString={searchString} searchResults={searchResults} />
         )}
       </div>
     </PagesContainer>

@@ -1,119 +1,124 @@
-import React from "react";
-import { BiArrowBack } from "react-icons/bi";
-import { FaEdit } from "react-icons/fa";
-import { faker } from "@faker-js/faker";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 import { PagesContainer } from "@/components/layout/containers";
-import { BackArrow } from "@/components/buttons";
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import { findFriend} from "@/app/actions/users";
+import { BackArrow, SearchButton } from "@/components/buttons";
+import { RxAvatar, RxButton } from "react-icons/rx";
+import SkeletonItem from "@/components/SkeletonItem";
+import { User } from "@/types";
+import { SearchFriendResults } from "@/components/views/Friends/SearchFriendResults";
 import { useSession } from "next-auth/react";
+import { IUser } from "@/mongo/models/User";
+
+interface FriendsProps {
+  friends: IUser[];
+}
 
 const Friends = () => {
-  const { data } = useSession();
-  const people = [
-    {
-      name: 'Leslie Alexander',
-      email: 'leslie.alexander@example.com',
-      role: 'Co-Founder / CEO',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Michael Foster',
-      email: 'michael.foster@example.com',
-      role: 'Co-Founder / CTO',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Dries Vincent',
-      email: 'dries.vincent@example.com',
-      role: 'Business Relations',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: null,
-    },
-    {
-      name: 'Lindsay Walton',
-      email: 'lindsay.walton@example.com',
-      role: 'Front-end Developer',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Courtney Henry',
-      email: 'courtney.henry@example.com',
-      role: 'Designer',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Tom Cook',
-      email: 'tom.cook@example.com',
-      role: 'Director of Product',
-      imageUrl: '/img/avatar.webp',
-      href: '#',
-      lastSeen: null,
-    },
-  ]
-  
+  const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [showNoFriendsFound, setShowNoFriendsFound] = useState(false);
+  const [searchString, setSearchString] = useState(""); 
+
+  const initialValues = {
+    searchString: "",
+  };
+
+  const validationSchema = Yup.object({
+    searchString: Yup.string().required("Search string is required"),
+  });
+
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email || '';
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      setLoading(true);
+      try {
+        const friends = await findFriend('', userEmail);
+        setSearchResults(friends);
+        setShowNoFriendsFound(friends?.length === 0);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+    if (searchResults.length === 0) {
+      fetchFriends();
+    }
+  }, [userEmail, searchResults]);
+
+  const onSubmit = async (values: { searchString: string }) => {
+    setLoading(true);
+    try {
+      const friends = await findFriend(values?.searchString || "", userEmail);
+      setSearchResults(friends);
+      setShowNoFriendsFound(friends?.length === 0);
+    } catch (error) {
+      console.error('Error fetching friends:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const Avatar = <RxAvatar />;
+  useEffect(() => {
+    if (searchString.length > 0) {
+      onSubmit();
+    }
+  }, [searchString]);
+
   return (
     <PagesContainer>
       <div className="p-4">
         <BackArrow />
       </div>
-      <div className="mx-4 mt-4 text-white">
-        <h1 className="text-3xl font-bold mb-4">Friends</h1>
-      <ul role="list" className="divide-y divide-gray-100">
-      {people.map((person) => (
-        <li key={person.email} className="relative flex justify-between gap-x-6 py-5 ">
-          <div className="flex min-w-0 gap-x-4">
-            <Image width={80} height={80} className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="avatar" />
-            <div className="min-w-0 flex-auto ">
-              <p className="text-sm font-semibold leading-6 text-white">
-                <a href={person.href}>
-                  <span className="absolute inset-x-0 -top-px bottom-0" />
-                  {person.name}
-                </a>
-              </p>
-              <p className="mt-1 flex text-xs leading-5 text-white">
-                <a href={`mailto:${person.email}`} className="relative truncate hover:underline">
-                  {person.email}
-                </a>
-              </p>
+      <h1 className="p-4 text-3xl text-white font-bold mb-4">Friends</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {(formikProps) => (
+          <Form className="flex justify-center items-center mt-4 p-4">
+            <div className="p-2 w-full bg-dark-purple bg-opacity-70 rounded-lg flex items-center">
+              <Field
+                value={searchString}
+                onChange={(e: any) =>
+                  e.target.value !== searchString &&
+                  setSearchString(e.target.value)
+                }
+                type="text"
+                name="searchString"
+                placeholder="Search for users..."
+                className="mr-2 p-2  w-5/6   rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <SearchButton loading={loading}/>
             </div>
-          </div>
-          <div className="flex shrink-0 items-center gap-x-4">
-            <div className="hidden sm:flex sm:flex-col sm:items-end">
-              {person.lastSeen ? (
-                <p className="mt-1 text-xs leading-5 text-white">
-                  Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-                </p>
-              ) : (
-                <div className="mt-1 flex items-center gap-x-1.5">
-                  <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </div>
-                  <p className="text-xs leading-5 text-white">Online</p>
-                </div>
-              )}
-            </div>
-            <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-          </div>
-        </li>
-      ))}
-    </ul>
-    </div>
+          </Form>
+        )}
+      </Formik>
+      <div className="my-12 mx-4">
+        {loading ? (
+    
+            <ul className="divide-y divide-gray-100">
+              <SkeletonItem />
+              <SkeletonItem />
+              <SkeletonItem />
+              <SkeletonItem />
+            </ul>
+          
+        ) : (
+          <SearchFriendResults searchString={searchString} searchResults={searchResults} />
+        )}
+      </div>
     </PagesContainer>
   );
 };
 
 export default Friends;
+
