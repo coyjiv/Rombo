@@ -10,9 +10,9 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
 
     const session = await getServerSession(req, res, authOptions)
 
-    // if (!session) {
-    //     return res.status(401).json({ error: "Not authorized" });
-    // }
+    if (!session) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
 
     if(req.method === "GET"){
         const searchString = req.query.searchString     

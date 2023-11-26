@@ -39,7 +39,6 @@ const PeoplePage = () => {
     }
   };
 
-  const Avatar = <RxAvatar />;
   useEffect(() => {
     if (searchString.length > 0) {
       onSubmit();

@@ -7,14 +7,13 @@ interface SearchFriendResultsProps {
 }
 
 export const SearchFriendResults = ({ searchResults, searchString }: SearchFriendResultsProps) => {
-  const friends = searchResults.filter((user) => user.friends.length > 0);
-
+  
   return (
     <div>
       {searchString.length > 0 ? (
-        friends.length > 0 ? (
+        searchResults.length > 0 ? (
           <ul className="divide-y divide-gray-100">
-            {friends.map((user) => (
+            {searchResults.map((user) => (
               <SearchFriendCard key={user.email} user={user} />
             ))}
           </ul>

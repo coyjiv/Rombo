@@ -18,33 +18,50 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse,
         // @ts-ignore 
         const email = session?.user?.email        
         if(!email) return res.status(400).json({error:"Email is missing"})
-
+  
         const user = await User.findOne({email})
         const potentialFriendEmail = req.body.email
         if(!potentialFriendEmail || !user) return res.status(400).json({error:"Email for potentialFriend is missing or user not found"})
+  
+        const potentialFriend = await User.findOne({ email:potentialFriendEmail })
+  
+      if (!potentialFriend) {
+        return res.status(400).json({ error: "Potential friend not found" });
+      }
+  
+      if (user.friends.includes(potentialFriend.email)) {
+        return res
+          .status(400)
+          .json({ error: "You are already friends with this user" });
+      }
 
-        const potentialFriend = await User.findOne({email:potentialFriendEmail})
-        if(!potentialFriend) return res.status(400).json({error:"Potential friend not found"})
+      if (potentialFriend.potentialFriends.includes(user.email)) {
+        user.potentialFriends = user.potentialFriends.filter(
+          (email) => email !== potentialFriend.email
+        );
+        user.friends.push(potentialFriend.email);
+  
+        potentialFriend.potentialFriends = potentialFriend.potentialFriends.filter(
+          (email) => email !== user.email
+        );
+        potentialFriend.friends.push(user.email as string);
+      }
+  
+        user.potentialFriends = user.potentialFriends.filter(
+            (email) => email !== potentialFriend.email
+          );
+          potentialFriend.potentialFriends = potentialFriend.potentialFriends.filter(
+            (email) => email !== user.email
+          );
 
-        if(user?.friends.includes(potentialFriend.email)) return res.status(400).json({error:"You are already friends with this user"})
-        if (potentialFriend.potentialFriends.includes(user.email)) {
-            user.potentialFriends = user.potentialFriends.filter((email) => email !== potentialFriend.email);
-            user.friends.push(potentialFriend.email);
-
-            potentialFriend.potentialFriends = potentialFriend.potentialFriends.filter((email) => email !== user.email);
-            potentialFriend.friends.push(user.email as string);
-        }
-
-        user.potentialFriends = user.potentialFriends.filter((email) => email !== potentialFriend.email)
-        user.potentialFriends = potentialFriend.potentialFriends.filter((email) => email !== user?.email)
-        user.friends.push(potentialFriend.email)
-        potentialFriend.friends.push(user?.email as string)
-        await user.save()
-        await potentialFriend.save()
-
-        return res.status(200).json({data:user})
-
-    } else {
-        res.status(405).json({error:"Method not allowed"})
+        user.friends.push(potentialFriend.email);
+        potentialFriend.friends.push(user.email as string);
+    
+        await user.save();
+        await potentialFriend.save();
+    
+        return res.status(200).json({ data: user });
+      } else {
+        res.status(405).json({ error: "Method not allowed" });
+      }
     }
-}

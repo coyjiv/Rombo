@@ -3,11 +3,17 @@ import { IUser } from "@/mongo/models/User";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export const SearchFriendCard = ({ user }: { user: IUser }) => {
   const { data } = useSession();
+  const [loading, setLoading] = useState(false);
+  const [isFriends, setIsFriends] = useState(user.friends.includes(data?.user?.email as string));
+  const [isCurrentUser, setIsCurrentUser] = useState(user.email === data?.user?.email);
 
   const removeFromFriends = async () => {
+    setLoading(true);
+    console.log("Removing from friends ");
     const res = await fetch("/api/people/removeFromFriends", {
       method: "POST",
       headers: {
@@ -19,7 +25,13 @@ export const SearchFriendCard = ({ user }: { user: IUser }) => {
     });
     const data = await res.json();
     console.log(data);
+    setLoading(false);
+    setIsFriends(false);
   };
+
+  useEffect(() => {
+    setIsCurrentUser(user.email === data?.user?.email);
+  }, [user.email, data?.user?.email]);
 
   const actionButton = (
     <button className="text-white hidden sm:block md:block lg:block" onClick={removeFromFriends}>
@@ -51,7 +63,9 @@ export const SearchFriendCard = ({ user }: { user: IUser }) => {
         <div className="flex items-center">
           {actionButton}
         </div>
-        <ChevronRightIcon className="h-5 w-5 flex text-gray-400" aria-hidden="true" />
+        <div className="flex items-center">
+        <ChevronRightIcon className="h-6 w-6 flex  text-gray-400" aria-hidden="true" />
+        </div>
       </div>
     </li>
   );
