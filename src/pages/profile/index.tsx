@@ -129,11 +129,11 @@ const Profile = () => {
         <div>
           <div className="flex flex-col-reverse md:flex-row justify-between my-4">
             <div
-              className="mb-4 p-4 duration-300 border-dark-purple "
+              className="mb-4 px-4 duration-300 border-dark-purple "
               // onClick={handleImageClick}
             >
-              <div onClick={copyUserNameToClipboard} className="cursor-pointer text-gray-300 font-bold text-2xl mb-1">
-                {profile?.fullName ?? userData?.fullName ?? "Erororoororoor"}
+              <div onClick={copyUserNameToClipboard} className="cursor-pointer text-gray-300 font-bold text-3xl mb-4">
+                {profile?.fullName ?? userData?.fullName ?? "Error"}
               </div>
               <div className="text-gray-300">{userData?.bio}</div>
             </div>
@@ -160,7 +160,7 @@ const Profile = () => {
                 return (
                   <div className="relative w-32 h-32 mx-auto md:mr-5 md:ml-auto cursor-pointer" onClick={handleOnClick}>
                     <Image
-                      className="rounded-xl shadow-slate-800 shadow-md h-auto"
+                      className="rounded-xl shadow-slate-800 shadow-md h-auto object-cover"
                       alt="Avatar"
                       src={userData?.avatar ?? "/img/avatar.webp"}
                       fill

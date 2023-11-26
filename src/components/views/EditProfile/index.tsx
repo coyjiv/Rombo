@@ -92,7 +92,7 @@ const EditProfile = ({
   };
 
   return (
-    <PagesContainer className="text-white h-screen">
+    <PagesContainer className="text-white ">
       <button
         onClick={handleCancelEdit}
         className="text-white p-[6px]  text-3xl rounded-full duration-300transition ease-in-out bg-dark-purple  hover:bg-super-purple  hover:-translate-y-1 hover:scale-110 duration-300 "
@@ -125,11 +125,11 @@ const EditProfile = ({
           return (
             <div onClick={handleOnClick} className="flex my-10">
               <Image
-                className="rounded-xl w-1/6 shadow-slate-800 shadow-md cursor-pointer ml-4"
+                className="rounded-xl w-72 h-72 cursor-pointer ml-4"
                 alt="Avatar"
                 src={profileData?.avatar ?? "/img/avatar.webp"}
-                width={250}
-                height={250}
+                width={300}
+                height={300}
               />
 
               <button>
@@ -147,7 +147,7 @@ const EditProfile = ({
         }}
       >
         {({ errors, touched, values }) => (
-          <Form className="rounded-lg m-3">
+          <Form className="rounded-lg">
             {/* First name */}
             <div className="cursor-pointer hover:bg-opacity-60 bg-dark-purple rounded-t-lg duration-300  p-4">
               <li className="list-none font-bold">First name</li>
@@ -234,15 +234,15 @@ const EditProfile = ({
               />
             </div>
 
-            <div className="flex justify-between p-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between p-4">
               <button
-                className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
+                className="btn btn-primary border-dark-purple bg-gradient-to-r transition-all w-full sm:w-1/2 md:w-1/4 lg:w-1/6 xl:w-1/12 max-w-full from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white mb-2 sm:mb-0"
                 type="submit"
               >
                 Save Profile
               </button>
               <button
-                className="btn btn-danger border-dark-purple bg-gradient-to-r transition-all w-1/12 from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
+                className="btn btn-danger border-dark-purple bg-gradient-to-r transition-all w-full sm:w-1/2 md:w-1/4 lg:w-1/6 xl:w-1/12 max-w-full from-super-purple via-purple-700 to-super-dark-purple rounded-lg shadow-md hover:from-super-purple hover:via-purple-700 hover:to-super-dark-purple ease-in-out hover:duration-700 bg-pos-0 hover:bg-pos-50 bg-size-200 text-white"
                 onClick={handleCancelEdit}
               >
                 Cancel
